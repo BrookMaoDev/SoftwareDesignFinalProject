@@ -17,8 +17,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class AddItemFragment extends Fragment {
-    private EditText editTextTitle, editTextAuthor, editTextGenre, editTextDescription;
-    private Spinner spinnerCategory;
+    private EditText editTextTitle, editTextAuthor, editTextDescription;
+    private Spinner spinnerCategory, spinnerPeriod;
     private Button buttonAdd;
 
     private FirebaseDatabase db;
@@ -29,9 +29,9 @@ public class AddItemFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_item, container, false);
 
-        editTextTitle = view.findViewById(R.id.editTextTitle);
-        editTextAuthor = view.findViewById(R.id.editTextAuthor);
-        editTextGenre = view.findViewById(R.id.editTextGenre);
+        editTextTitle = view.findViewById(R.id.editTextLotNumber);
+        editTextAuthor = view.findViewById(R.id.editTextName);
+        spinnerPeriod = view.findViewById(R.id.spinnerPeriod);
         editTextDescription = view.findViewById(R.id.editTextDescription);
         spinnerCategory = view.findViewById(R.id.spinnerCategory);
         buttonAdd = view.findViewById(R.id.buttonAdd);
@@ -43,6 +43,11 @@ public class AddItemFragment extends Fragment {
                 R.array.categories_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCategory.setAdapter(adapter);
+
+        adapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.period_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerPeriod.setAdapter(adapter);
 
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,7 +62,7 @@ public class AddItemFragment extends Fragment {
     private void addItem() {
         String title = editTextTitle.getText().toString().trim();
         String author = editTextAuthor.getText().toString().trim();
-        String genre = editTextGenre.getText().toString().trim();
+        String genre = spinnerPeriod.getSelectedItem().toString().trim();
         String description = editTextDescription.getText().toString().trim();
         String category = spinnerCategory.getSelectedItem().toString().toLowerCase();
 

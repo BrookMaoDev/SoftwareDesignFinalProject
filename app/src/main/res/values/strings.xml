@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">B07 Demo Summer 2024</string>
+    <string name="app_name">Toronto Asian Art Museum Collection Management</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="delete_item">Delete Item</string>
@@ -9,10 +9,42 @@
     <string name="scroller">Scroller</string>
     <string name="spinner">Spinner</string>
     <string name="manage_items">Manage Items</string>
+    <string name="category">Category</string>
+    <string name="period">Period</string>
 
     <string-array name="categories_array">
-        <item>Books</item>
-        <item>Movies</item>
+        <item>Jade</item>
+        <item>Paintings</item>
+        <item>Calligraphy</item>
+        <item>Rubbings</item>
+        <item>Bronze</item>
+        <item>Brass</item>
+        <item>Copper</item>
+        <item>Gold and Silver</item>
+        <item>Lacquer</item>
+        <item>Enamels</item>
+    </string-array>
+
+    <string-array name="period_array">
+        <item>Xia</item>
+        <item>Shang</item>
+        <item>Zhou</item>
+        <item>Chuanqiu</item>
+        <item>Zhanggou</item>
+        <item>Qin</item>
+        <item>Hang</item>
+        <item>Shangou</item>
+        <item>Ji</item>
+        <item>South and North</item>
+        <item>Shui</item>
+        <item>Tang</item>
+        <item>Liao</item>
+        <item>Song</item>
+        <item>Jin</item>
+        <item>Yuan</item>
+        <item>Ming</item>
+        <item>Qing</item>
+        <item>Modern</item>
     </string-array>
 
 
