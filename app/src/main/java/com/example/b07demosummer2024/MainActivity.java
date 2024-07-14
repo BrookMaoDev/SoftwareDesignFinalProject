@@ -29,9 +29,6 @@ public class MainActivity extends AppCompatActivity {
         db = FirebaseDatabase.getInstance("https://softwaredesignfinalproje-5aa70-default-rtdb.firebaseio.com/");
         DatabaseReference myRef = db.getReference("testDemo");
 
-//        myRef.setValue("B07 Demo!");
-        myRef.child("movies").setValue("B07 Demo!");
-
         if (savedInstanceState == null) {
             loadFragment(new HomeFragment());
         }
