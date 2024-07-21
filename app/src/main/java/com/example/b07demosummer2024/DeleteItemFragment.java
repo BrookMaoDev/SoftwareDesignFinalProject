@@ -20,7 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class DeleteItemFragment extends Fragment {
-    private EditText editTextTitle;
+    private EditText editTextName;
     private Spinner spinnerCategory;
     private Button buttonDelete;
 
@@ -32,7 +32,7 @@ public class DeleteItemFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_delete_item, container, false);
 
-        editTextTitle = view.findViewById(R.id.editTextTitle);
+        editTextName = view.findViewById(R.id.editTextName);
         spinnerCategory = view.findViewById(R.id.spinnerCategory);
         buttonDelete = view.findViewById(R.id.buttonDelete);
 
@@ -55,7 +55,7 @@ public class DeleteItemFragment extends Fragment {
     }
 
     private void deleteItemByTitle() {
-        String title = editTextTitle.getText().toString().trim();
+        String title = editTextName.getText().toString().trim();
         String category = spinnerCategory.getSelectedItem().toString().toLowerCase();
 
         if (title.isEmpty()) {

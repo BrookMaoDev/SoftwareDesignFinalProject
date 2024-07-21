@@ -12,6 +12,7 @@
     <string name="category">Category</string>
     <string name="period">Period</string>
     <string name="upload_item">Upload Image or Video</string>
+    <string name="item_name">Item Name</string>
 
     <string-array name="categories_array">
         <item>Jade</item>
