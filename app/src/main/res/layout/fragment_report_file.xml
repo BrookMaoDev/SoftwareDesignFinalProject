@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:rotationX="0"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:translationY="40dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.814"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="26dp" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:translationY="80dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.814"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="26dp" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:translationY="160dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.814"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="26dp" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:translationY="120dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.814"
+            app:layout_constraintStart_toStartOf="parent"
+            app:strokeWidth="0.5dp"
+            tools:layout_editor_absoluteY="26dp" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Generate a report by entering the following information:"
+            android:translationY="-40dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="79dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="-26dp" />
+
+        <TextView
+            android:id="@+id/LotNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enter Lot Number:"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="79dp" />
+
+        <TextView
+            android:id="@+id/LotNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enter Lot Number:"
+            android:translationY="40dp"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="79dp" />
+
+        <TextView
+            android:id="@+id/LotNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enter Lot Number:"
+            android:translationY="80dp"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="79dp" />
+
+        <TextView
+            android:id="@+id/LotNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enter Lot Number:"
+            android:translationY="120dp"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="79dp" />
+
+        <TextView
+            android:id="@+id/LotNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Generate the report by Category, Description and picture only:"
+            android:translationY="160dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="79dp" />
+
+        <TextView
+            android:id="@+id/LotNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Generate the report Period, Description and picture only:"
+            android:translationY="240dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="79dp" />
+
+        <TextView
+            android:id="@+id/LotNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Generate the report for all items:"
+            android:translationY="320dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="79dp" />
+
+        <TextView
+            android:id="@+id/LotNum"
+            android:layout_width="397dp"
+            android:layout_height="40dp"
+            android:text="Generate the report for all items with Description and picture only:"
+            android:translationY="400dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="79dp" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="89dp"
+            android:layout_height="24dp"
+            tools:layout_editor_absoluteX="147dp"
+            tools:layout_editor_absoluteY="74dp" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="89dp"
+            android:layout_height="24dp"
+            android:translationY="40dp"
+            tools:layout_editor_absoluteX="147dp"
+            tools:layout_editor_absoluteY="74dp" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="89dp"
+            android:layout_height="24dp"
+            android:translationY="120dp"
+            tools:layout_editor_absoluteX="147dp"
+            tools:layout_editor_absoluteY="74dp" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="89dp"
+            android:layout_height="24dp"
+            android:translationY="80dp"
+            tools:layout_editor_absoluteX="147dp"
+            tools:layout_editor_absoluteY="74dp" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:translationY="40dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="224dp" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:translationY="120dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="224dp" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:translationY="200dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="224dp" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:translationY="280dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="224dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="50dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

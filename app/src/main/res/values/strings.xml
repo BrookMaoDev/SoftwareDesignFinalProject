@@ -48,6 +48,10 @@
         <item>Qing</item>
         <item>Modern</item>
     </string-array>
+    <string name="upload_image">Upload Image</string>
+    <string name="result">Result</string>
+    <string name="lot">Lot</string>
+    <string name="name">Name</string>
 
 
 </resources>
