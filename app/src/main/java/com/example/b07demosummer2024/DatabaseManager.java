@@ -20,4 +20,8 @@ public final class DatabaseManager {
         }
         return instance;
     }
+
+    public DatabaseReference items() {
+        return this.db.getReference().child("items");
+    }
 }
