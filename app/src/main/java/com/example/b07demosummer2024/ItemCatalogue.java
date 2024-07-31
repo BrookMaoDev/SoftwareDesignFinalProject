@@ -17,16 +17,20 @@ import java.util.List;
 public class ItemCatalogue {
 
     // A query that dictates the total search space
-    Query dir;
+    private Query dir;
 
     // The filter to use on our catalogue
-    Filter filter;
+    private Filter filter;
 
     // The items that should display in the catalogue
     private final ArrayList<Item> items;
 
+    // The list of functions to call in order
+    private final ArrayList<Runnable> routines;
+
     private ItemCatalogue() {
         this.items = new ArrayList<>();
+        this.routines = new ArrayList<>();
     }
 
     /**
@@ -52,18 +56,45 @@ public class ItemCatalogue {
     }
 
     /**
-     * Add a new listener to this ItemCatalogue
-     * @param listener  the listener to add
+     * Add a function to be called when database information is updated.
+     * @param  fn the function to be called
      */
-    void addValueEventListener(ValueEventListener listener) {
-        this.dir.addValueEventListener(listener);
+    public void onUpdate(Runnable fn) {
+        this.routines.add(fn);
+    }
+
+    /**
+     * Initialize the catalogue (polling for changes).
+     * @return this
+     */
+    public ItemCatalogue init() {
+        this.dir.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                collectFromSnapshot(snapshot);
+                for (Runnable fn : routines) {
+                    fn.run();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
+        return this;
+    }
+
+    /**
+     * @return this catalogue's filter
+     */
+    public Filter getFilter() {
+        return this.filter;
     }
 
     /**
      * Refresh internal data with a given snapshot.
      * @param snapshot  the snapshot to use
      */
-    void collectFromSnapshot(DataSnapshot snapshot) {
+    public void collectFromSnapshot(DataSnapshot snapshot) {
         this.items.clear();
         for (DataSnapshot childSnapshot : snapshot.getChildren()) {
             this.items.add(childSnapshot.getValue(Item.class));
@@ -74,21 +105,21 @@ public class ItemCatalogue {
     /**
      * Apply the filter to the catalogue.
      */
-    void applyFilter() {
+    public void applyFilter() {
         this.filter.applyToList(this.items);
     }
 
     /**
      * @return the items in this catalogue
      */
-    ArrayList<Item> getItems() {
+    public ArrayList<Item> getItems() {
         return this.items;
     }
 
     /**
      * Print the items in this catalogue in a JSON-like format.
      */
-    void display() {
+    public void display() {
         for (int i = 0; i < this.items.size(); ++i) {
             System.out.println((i + 1) + ": " + this.items.get(i) + ",");
         }

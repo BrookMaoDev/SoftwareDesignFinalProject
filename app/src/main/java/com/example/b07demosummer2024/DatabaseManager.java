@@ -24,4 +24,8 @@ public final class DatabaseManager {
     public DatabaseReference items() {
         return this.db.getReference().child("items");
     }
+
+    public ItemCatalogue createItemCatalogue() {
+        return ItemCatalogue.fromDatabaseDirectory(this.items());
+    }
 }
