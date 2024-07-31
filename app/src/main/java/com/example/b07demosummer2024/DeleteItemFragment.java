@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -22,7 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 public class DeleteItemFragment extends Fragment {
     private EditText editTextName;
     private Spinner spinnerCategory;
-    private Button buttonDelete;
+    private Button buttonDelete, buttonCancel;
 
     private FirebaseDatabase db;
     private DatabaseReference itemsRef;
@@ -35,6 +36,7 @@ public class DeleteItemFragment extends Fragment {
         editTextName = view.findViewById(R.id.editTextName);
         spinnerCategory = view.findViewById(R.id.spinnerCategory);
         buttonDelete = view.findViewById(R.id.buttonDelete);
+        buttonCancel = view.findViewById(R.id.buttonCancel);
 
         db = FirebaseDatabase.getInstance("https://softwaredesignfinalproje-5aa70-default-rtdb.firebaseio.com/");
 
@@ -51,6 +53,8 @@ public class DeleteItemFragment extends Fragment {
             }
         });
 
+        buttonCancel.setOnClickListener(v -> getParentFragmentManager().popBackStack());
+
         return view;
     }
 
@@ -63,17 +67,18 @@ public class DeleteItemFragment extends Fragment {
             return;
         }
 
-        itemsRef = db.getReference("categories/" + category);
+        itemsRef = db.getReference("items/");
         itemsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 boolean itemFound = false;
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Item item = snapshot.getValue(Item.class);
-                    if (item != null && item.getName().equalsIgnoreCase(title)) {
+                    if (item != null && item.getName().equalsIgnoreCase(title) && item.getCategory().equalsIgnoreCase(category)) {
                         snapshot.getRef().removeValue().addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
                                 Toast.makeText(getContext(), "Item deleted", Toast.LENGTH_SHORT).show();
+                                getParentFragmentManager().popBackStack();
                             } else {
                                 Toast.makeText(getContext(), "Failed to delete item", Toast.LENGTH_SHORT).show();
                             }
