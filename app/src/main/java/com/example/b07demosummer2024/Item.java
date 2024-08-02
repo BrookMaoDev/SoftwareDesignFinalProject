@@ -1,5 +1,7 @@
 package com.example.b07demosummer2024;
 
+import androidx.annotation.NonNull;
+
 public class Item {
 
     private String lotNumber;
@@ -66,5 +68,18 @@ public class Item {
 
     public void setSavePath(String savePath) {
         this.savePath = savePath;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return  "{"
+                + "\n\tcategory: " + this.category
+                + "\n\tdescription: " + this.description
+                + "\n\tlotNumber: " + this.lotNumber
+                + "\n\tname: " + this.name
+                + "\n\tperiod: " + this.period
+                + "\n\tsavePath: " + this.savePath
+                + "\n}";
     }
 }

@@ -12,9 +12,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:hint="Lot Number"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/editTextName"
@@ -22,9 +22,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:hint="Name"
-        app:layout_constraintTop_toBottomOf="@+id/editTextLotNumber"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/editTextLotNumber" />
 
     <TextView
         android:id="@+id/spinnerCategoryLabel"
@@ -32,18 +32,18 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="@string/category"
-        app:layout_constraintTop_toBottomOf="@+id/editTextName"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/editTextName" />
 
     <Spinner
         android:id="@+id/spinnerCategory"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerCategoryLabel"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCategoryLabel" />
 
     <TextView
         android:id="@+id/spinnerPeriodLabel"
@@ -51,18 +51,18 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="@string/period"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerCategory"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCategory" />
 
     <Spinner
         android:id="@+id/spinnerPeriod"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerPeriodLabel"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/spinnerPeriodLabel" />
 
     <EditText
         android:id="@+id/editTextDescription"
@@ -70,9 +70,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:hint="Description"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerPeriod"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/spinnerPeriod" />
 
     <Button
         android:id="@+id/buttonUpload"
@@ -80,9 +80,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="@string/upload_item"
-        app:layout_constraintTop_toBottomOf="@+id/editTextDescription"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/editTextDescription" />
 
     <Button
         android:id="@+id/buttonAdd"
@@ -90,7 +90,17 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="@string/add_item"
-        app:layout_constraintTop_toBottomOf="@+id/buttonUpload"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/buttonUpload" />
+
+    <Button
+        android:id="@+id/buttonCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/cancel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonAdd" />
 </androidx.constraintlayout.widget.ConstraintLayout>

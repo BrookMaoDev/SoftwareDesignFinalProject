@@ -52,6 +52,6 @@
     <string name="result">Result</string>
     <string name="lot">Lot</string>
     <string name="name">Name</string>
-
+    <string name="cancel">Cancel</string>
 
 </resources>

@@ -20,6 +20,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -31,7 +32,7 @@ import java.io.ByteArrayOutputStream;
 public class AddItemFragment extends Fragment {
     private EditText editTextLotNumber, editTextName, editTextDescription;
     private Spinner spinnerCategory, spinnerPeriod;
-    private Button buttonAdd, buttonUpload;
+    private Button buttonAdd, buttonUpload, buttonCancel;
     private FirebaseDatabase db;
     private DatabaseReference itemsRef;
     private StorageReference storageRef;
@@ -45,6 +46,7 @@ public class AddItemFragment extends Fragment {
 
                 try {
                     selectedImageBitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri);
+                    buttonUpload.setText("Change Upload");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -64,6 +66,7 @@ public class AddItemFragment extends Fragment {
         editTextDescription = view.findViewById(R.id.editTextDescription);
         buttonAdd = view.findViewById(R.id.buttonAdd);
         buttonUpload = view.findViewById(R.id.buttonUpload);
+        buttonCancel = view.findViewById(R.id.buttonCancel);
 
         db = FirebaseDatabase.getInstance("https://softwaredesignfinalproje-5aa70-default-rtdb.firebaseio.com/");
 
@@ -93,6 +96,8 @@ public class AddItemFragment extends Fragment {
             }
         });
 
+        buttonCancel.setOnClickListener(v -> getParentFragmentManager().popBackStack());
+
         return view;
     }
 
@@ -121,13 +126,14 @@ public class AddItemFragment extends Fragment {
         byte[] data = baos.toByteArray();
         imageRef.putBytes(data);
 
-        itemsRef = db.getReference("categories/" + category);
+        itemsRef = db.getReference("items/");
         String id = itemsRef.push().getKey();
         Item item = new Item(lotNumber, name, category, period, description, storagePath);
 
         itemsRef.child(id).setValue(item).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Toast.makeText(getContext(), "Item added", Toast.LENGTH_SHORT).show();
+                getParentFragmentManager().popBackStack();
             } else {
                 Toast.makeText(getContext(), "Failed to add item", Toast.LENGTH_SHORT).show();
             }
