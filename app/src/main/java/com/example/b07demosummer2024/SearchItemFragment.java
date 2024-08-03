@@ -80,10 +80,18 @@ public class SearchItemFragment extends Fragment {
     private void searchItem() {
         String lotNumber = editTextLotNumber.getText().toString().trim();
         String name = editTextName.getText().toString().toLowerCase().trim();
-        String category = spinnerCategory.getSelectedItem().toString().toLowerCase();
-        String period = spinnerPeriod.getSelectedItem().toString().trim();
 
-        if (lotNumber.isEmpty() || period.isEmpty()) {
+        String category = null;
+        if(spinnerCategory != null && spinnerCategory.getSelectedItem() != null ) {
+            category = spinnerCategory.getSelectedItem().toString().toLowerCase();
+        }
+//        }
+        String period = null;
+        if(spinnerPeriod != null && spinnerPeriod.getSelectedItem() != null ) {
+            period = spinnerPeriod.getSelectedItem().toString().toLowerCase();
+        }
+
+        if (lotNumber.isEmpty() || name.isEmpty() || category == null || period == null ) {
             Toast.makeText(getContext(), "Please fill out all fields", Toast.LENGTH_SHORT).show();
             return;
         }
