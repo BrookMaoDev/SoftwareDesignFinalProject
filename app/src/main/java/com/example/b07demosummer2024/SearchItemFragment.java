@@ -116,7 +116,7 @@ public class SearchItemFragment extends Fragment {
                     Toast.makeText(getContext(), "Item not found", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    //function displayItem() is soon to be made
+                    //function displayItem() is in progress
                 }
 
             }
