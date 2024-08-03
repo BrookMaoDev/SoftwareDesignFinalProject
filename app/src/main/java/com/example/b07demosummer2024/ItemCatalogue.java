@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.BiFunction;
 
 public class ItemCatalogue {
 
@@ -134,7 +135,7 @@ public class ItemCatalogue {
         String category;
         String lotNumber;
         String period;
-        String namePrefix;
+        String name;
 
         // Attributes to sort by
         String[] keys;
@@ -144,12 +145,12 @@ public class ItemCatalogue {
 
         public Filter() {}
 
-        private Filter(String category, String lotNumber, String period, String namePrefix,
-                       String[] keys, boolean descending) {
+        private Filter(String category, String lotNumber, String period, String name, String[] keys,
+                       boolean descending) {
             this.category = category;
             this.lotNumber = lotNumber;
             this.period = period;
-            this.namePrefix = namePrefix;
+            this.name = name;
             this.keys = keys;
             this.descending = descending;
         }
@@ -169,8 +170,8 @@ public class ItemCatalogue {
             return this;
         }
 
-        public Filter namePrefix(String prefix) {
-            this.namePrefix = prefix;
+        public Filter name(String name) {
+            this.name = name;
             return this;
         }
 
@@ -193,8 +194,8 @@ public class ItemCatalogue {
          * @return a copy of this builder
          */
         public Filter duplicate() {
-            return new Filter(this.category, this.lotNumber, this.period, this.namePrefix,
-                    this.keys, this.descending);
+            return new Filter(this.category, this.lotNumber, this.period, this.name, this.keys,
+                    this.descending);
         }
 
         /**
@@ -214,19 +215,26 @@ public class ItemCatalogue {
          * @return whether or not this filter accepts an item
          */
         public boolean accepts(Item item) {
-            if (this.category != null && !item.getCategory().equalsIgnoreCase(this.category)) {
+            if (this.category != null
+                    && !StringUtil.containsIgnoreCase(item.getCategory(), this.category)) {
                 return false;
             }
-            if (this.lotNumber != null && !item.getLotNumber().equalsIgnoreCase(this.lotNumber)) {
+
+            if (this.lotNumber != null
+                    && !StringUtil.containsIgnoreCase(item.getLotNumber(), this.lotNumber)) {
                 return false;
             }
-            if (this.period != null && !item.getPeriod().equalsIgnoreCase(this.period)) {
+
+            if (this.period != null &&
+                    !StringUtil.containsIgnoreCase(item.getPeriod(), this.period)) {
                 return false;
             }
-            if (this.namePrefix != null
-                    && !item.getName().toUpperCase().startsWith(this.namePrefix.toUpperCase())) {
+
+            if (this.name != null
+                    && !StringUtil.containsIgnoreCase(item.getName(), this.name)) {
                 return false;
             }
+
             return true;
         }
 
