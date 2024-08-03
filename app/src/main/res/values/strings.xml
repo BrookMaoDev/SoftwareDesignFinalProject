@@ -53,5 +53,8 @@
     <string name="lot">Lot</string>
     <string name="name">Name</string>
     <string name="cancel">Cancel</string>
+    <string name="picture">Picture</string>
+    <string name="display">String Result Based on </string>
+    <string name="next_page">Next Page</string>
 
 </resources>
