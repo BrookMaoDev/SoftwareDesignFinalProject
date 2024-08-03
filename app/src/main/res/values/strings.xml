@@ -56,5 +56,19 @@
     <string name="picture">Picture</string>
     <string name="display">String Result Based on </string>
     <string name="next_page">Next Page</string>
+    <string name="search">Search Item</string>
+
+    <string name="login">Login</string>
+    <string name="logout">Logout</string>
+    <string name="register">Register</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="submit">Submit</string>
+    <string name="have_account">Already have an account?</string>
+    <string name="click_login">Click here to <u>Login</u>.</string>
+    <string name="no_account">Don\'t have an account yet?</string>
+    <string name="click_signup">Click here to <u>Sign Up</u>.</string>
+    <string name="admin_box">Admin</string>
+    <string name="adminPIN">Admin PIN</string>
 
 </resources>

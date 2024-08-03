@@ -35,6 +35,7 @@ public class SearchItemFragment extends Fragment {
     private Bitmap selectedImageBitmap;
     ArrayList<Item> filteredList;
     ItemAdapter adapter;
+    private String category, period;
 
     @Nullable
     @Override
@@ -81,12 +82,12 @@ public class SearchItemFragment extends Fragment {
         String lotNumber = editTextLotNumber.getText().toString().trim();
         String name = editTextName.getText().toString().toLowerCase().trim();
 
-        String category = null;
+        category = null;
         if(spinnerCategory != null && spinnerCategory.getSelectedItem() != null ) {
             category = spinnerCategory.getSelectedItem().toString().toLowerCase();
         }
 //        }
-        String period = null;
+        period = null;
         if(spinnerPeriod != null && spinnerPeriod.getSelectedItem() != null ) {
             period = spinnerPeriod.getSelectedItem().toString().toLowerCase();
         }
