@@ -70,5 +70,6 @@
     <string name="click_signup">Click here to <u>Sign Up</u>.</string>
     <string name="admin_box">Admin</string>
     <string name="adminPIN">Admin PIN</string>
+    <string name="atleast">Password must be at least 6 characters</string>
 
 </resources>
