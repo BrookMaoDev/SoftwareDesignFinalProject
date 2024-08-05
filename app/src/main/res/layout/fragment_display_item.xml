@@ -15,8 +15,6 @@
             android:layout_height="wrap_content"
             android:stretchColumns="*">
 
-            <!-- Header row -->
-
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
