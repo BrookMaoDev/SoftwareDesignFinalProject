@@ -2,15 +2,12 @@ package com.example.b07demosummer2024;
 
 import androidx.annotation.NonNull;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -22,6 +19,9 @@ public class ItemCatalogue {
     // The filter to use on our catalogue
     private Filter filter;
 
+    // All items collected from query
+    private final ArrayList<Item> allItems;
+
     // The items that should display in the catalogue
     private final ArrayList<Item> items;
 
@@ -29,6 +29,7 @@ public class ItemCatalogue {
     private final ArrayList<Runnable> routines;
 
     private ItemCatalogue() {
+        this.allItems = new ArrayList<>();
         this.items = new ArrayList<>();
         this.routines = new ArrayList<>();
     }
@@ -46,13 +47,25 @@ public class ItemCatalogue {
 
     /**
      * Set our catalogue to use a filter.
-     * @param filter    the filter to create the catalogue from
+     * @param filter    the filter to use on the items
      * @return          this
      */
     public ItemCatalogue withFilter(Filter filter) {
         this.filter = filter;
-        this.applyFilter();
         return this;
+    }
+
+    /**
+     * Set our catalogue to use a filter and update accordingly.
+     * @param filter    the filter to use on the items
+     */
+    public void changeFilter(Filter filter) {
+        if (this.filter != null && this.filter.equals(filter)) {
+            return;
+        }
+        this.filter = filter;
+        this.applyFilter();
+        this.update();
     }
 
     /**
@@ -72,9 +85,6 @@ public class ItemCatalogue {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 collectFromSnapshot(snapshot);
-                for (Runnable fn : routines) {
-                    fn.run();
-                }
             }
 
             @Override
@@ -95,18 +105,33 @@ public class ItemCatalogue {
      * @param snapshot  the snapshot to use
      */
     public void collectFromSnapshot(DataSnapshot snapshot) {
-        this.items.clear();
+        this.allItems.clear();
         for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-            this.items.add(childSnapshot.getValue(Item.class));
+            this.allItems.add(childSnapshot.getValue(Item.class));
         }
         this.applyFilter();
+        this.update();
     }
 
     /**
      * Apply the filter to the catalogue.
      */
     public void applyFilter() {
-        this.filter.applyToList(this.items);
+        this.items.clear();
+        if (this.filter == null) {
+            this.items.addAll(this.allItems);
+            return;
+        }
+        this.filter.collectFilteredItems(this.allItems, this.items);
+    }
+
+    /**
+     * Run all onUpdate functions.
+     */
+    public void update() {
+        for (Runnable fn : this.routines) {
+            fn.run();
+        }
     }
 
     /**
@@ -134,7 +159,7 @@ public class ItemCatalogue {
         String category;
         String lotNumber;
         String period;
-        String namePrefix;
+        String name;
 
         // Attributes to sort by
         String[] keys;
@@ -144,12 +169,12 @@ public class ItemCatalogue {
 
         public Filter() {}
 
-        private Filter(String category, String lotNumber, String period, String namePrefix,
-                       String[] keys, boolean descending) {
+        private Filter(String category, String lotNumber, String period, String name, String[] keys,
+                       boolean descending) {
             this.category = category;
             this.lotNumber = lotNumber;
             this.period = period;
-            this.namePrefix = namePrefix;
+            this.name = name;
             this.keys = keys;
             this.descending = descending;
         }
@@ -169,8 +194,8 @@ public class ItemCatalogue {
             return this;
         }
 
-        public Filter namePrefix(String prefix) {
-            this.namePrefix = prefix;
+        public Filter name(String name) {
+            this.name = name;
             return this;
         }
 
@@ -193,16 +218,16 @@ public class ItemCatalogue {
          * @return a copy of this builder
          */
         public Filter duplicate() {
-            return new Filter(this.category, this.lotNumber, this.period, this.namePrefix,
-                    this.keys, this.descending);
+            return new Filter(this.category, this.lotNumber, this.period, this.name, this.keys,
+                    this.descending);
         }
 
         /**
          * Apply this filter to a list of items.
          * @param items the list of items to apply this filter to
          */
-        public void applyToList(List<Item> items) {
-            items.removeIf(this::rejects);
+        public void collectFilteredItems(List<Item> allItems, List<Item> items) {
+            allItems.stream().filter(this::accepts).forEach(items::add);
             if (this.keys == null || this.keys.length == 0) return;
             items.sort(this.descending ?
                     Collections.reverseOrder(this::compareItems)
@@ -214,19 +239,26 @@ public class ItemCatalogue {
          * @return whether or not this filter accepts an item
          */
         public boolean accepts(Item item) {
-            if (this.category != null && !item.getCategory().equalsIgnoreCase(this.category)) {
+            if (this.category != null
+                    && !StringUtil.containsIgnoreCase(item.getCategory(), this.category)) {
                 return false;
             }
-            if (this.lotNumber != null && !item.getLotNumber().equalsIgnoreCase(this.lotNumber)) {
+
+            if (this.lotNumber != null
+                    && !StringUtil.containsIgnoreCase(item.getLotNumber(), this.lotNumber)) {
                 return false;
             }
-            if (this.period != null && !item.getPeriod().equalsIgnoreCase(this.period)) {
+
+            if (this.period != null &&
+                    !StringUtil.containsIgnoreCase(item.getPeriod(), this.period)) {
                 return false;
             }
-            if (this.namePrefix != null
-                    && !item.getName().toUpperCase().startsWith(this.namePrefix.toUpperCase())) {
+
+            if (this.name != null
+                    && !StringUtil.containsIgnoreCase(item.getName(), this.name)) {
                 return false;
             }
+
             return true;
         }
 
@@ -277,6 +309,28 @@ public class ItemCatalogue {
                 default:
                     return 0;
             }
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o == null) {
+                return false;
+            }
+
+            if (o == this) {
+                return true;
+            }
+
+            if (!(o instanceof Filter)) {
+                return false;
+            }
+
+            Filter that = (Filter) o;
+            return this.category.equals(that.category)
+                    && this.lotNumber.equals(that.lotNumber)
+                    && this.name.equals(that.name)
+                    && this.period.equals(that.period)
+                    && this.descending == that.descending;
         }
 
     }
