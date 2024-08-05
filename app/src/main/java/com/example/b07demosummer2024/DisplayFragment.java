@@ -44,10 +44,10 @@ public class DisplayFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.fragment_display_item, container, false);
-        buttonView = buttonView.findViewById(R.id.buttonView);
-        buttonBack = buttonBack.findViewById(R.id.buttonBack);
-        buttonNextPage = buttonNextPage.findViewById(R.id.buttonNextPage);
-        buttonPrevPage = buttonPrevPage.findViewById(R.id.buttonPrevPage);
+        buttonView = view.findViewById(R.id.buttonView);
+        buttonBack = view.findViewById(R.id.buttonBack);
+        buttonNextPage = view.findViewById(R.id.buttonNextPage);
+        buttonPrevPage = view.findViewById(R.id.buttonPrevPage);
         currentItems = new ArrayList<>();
         tableLayout = view.findViewById(R.id.tableLayout);
         pageNumber = view.findViewById(R.id.pageNumber);
@@ -124,7 +124,7 @@ public class DisplayFragment extends Fragment {
         String pageNumberText = "Page " + currentPage + " / " + numberOfPages;
         pageNumber.setText(pageNumberText);
         buttonNextPage.setEnabled(currentPage > 1);
-        buttonPrevPage.setEnabled(currentPage < numberOfPages);
+        buttonPrevPage.setEnabled(currentPage < numberOfPages && currentPage > 1);
     }
 
     private void bindItemToRow(Item item, TableRow row) {
