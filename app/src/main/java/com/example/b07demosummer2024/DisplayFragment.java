@@ -6,7 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,14 +25,14 @@ public class DisplayFragment extends Fragment {
     private final static int NUM_OF_ITEMS_PER_PAGE = 5;
 
     private Button buttonView, buttonBack, buttonNextPage, buttonPrevPage;
-    private RecyclerView recyclerView;
+    private TableLayout tableLayout;
     private int currentPage = 1;
     private int numberOfPages;
     private EditText pageNumber;
     private ItemCatalogue itemCatalogue;
-    private ItemAdapter itemAdapter;
     private ArrayList<Item> currentItems;
     private ItemCatalogue.Filter filter;
+    private ArrayList<TableRow> tableRowList;
 
     public static DisplayFragment makeInstance(ItemCatalogue.Filter filter){
         DisplayFragment displayFragment = new DisplayFragment();
@@ -37,20 +42,25 @@ public class DisplayFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater layoutInflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.fragment_display_item, container, false);
-
         buttonView = buttonView.findViewById(R.id.buttonView);
         buttonBack = buttonBack.findViewById(R.id.buttonBack);
         buttonNextPage = buttonNextPage.findViewById(R.id.buttonNextPage);
         buttonPrevPage = buttonPrevPage.findViewById(R.id.buttonPrevPage);
-        recyclerView = recyclerView.findViewById(R.id.recyclerView);
         currentItems = new ArrayList<>();
-        itemAdapter = new ItemAdapter(currentItems);
-        recyclerView.setAdapter(itemAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        tableLayout = view.findViewById(R.id.tableLayout);
+        pageNumber = view.findViewById(R.id.pageNumber);
         itemCatalogue = DatabaseManager.getInstance().createItemCatalogue().withFilter(filter);
         itemCatalogue.applyFilter();
+
+        tableRowList = new ArrayList<>(NUM_OF_ITEMS_PER_PAGE);
+        for (int i = 0; i < NUM_OF_ITEMS_PER_PAGE; i++) {
+            TableRow row = (TableRow) inflater.inflate(R.layout.item_row, tableLayout, false);
+            tableLayout.addView(row);
+            tableRowList.add(row);
+        }
+
         /* buttonView.setOnClickListener({
                 @Override
                 public void onClick(View v){ loadFragment(new ViewFragment())
@@ -87,7 +97,18 @@ public class DisplayFragment extends Fragment {
             currentItems.add(itemCatalogue.getItems().get(i));
         }
 
-        itemAdapter.notifyDataSetChanged();
+        for(int i = 0; i < NUM_OF_ITEMS_PER_PAGE; i++){
+            TableRow tableRow = tableRowList.get(i);
+            Item item = currentItems.get(i);
+            if(i + startIndex <= endIndex){
+                bindItemToRow(item, tableRow);
+                tableRow.setVisibility(View.VISIBLE);
+            }
+            else{
+                tableRow.setVisibility(View.INVISIBLE);
+            }
+        }
+
         updatePage();
     }
 
@@ -106,4 +127,12 @@ public class DisplayFragment extends Fragment {
         buttonPrevPage.setEnabled(currentPage < numberOfPages);
     }
 
+    private void bindItemToRow(Item item, TableRow row) {
+        // how to bind check box to row?
+        ((TextView) row.findViewById(R.id.nameTextView)).setText(item.getName());
+        ((TextView) row.findViewById(R.id.lotNumberTextView)).setText(item.getLotNumber());
+        ((TextView) row.findViewById(R.id.categoryTextView)).setText(item.getCategory());
+        ((TextView) row.findViewById(R.id.periodTextView)).setText(item.getPeriod());
+        // loadImage((ImageView) row.findViewById(R.id.pictureImageView), item.getPictureUrl());
+    }
 }
