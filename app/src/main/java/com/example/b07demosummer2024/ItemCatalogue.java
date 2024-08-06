@@ -142,6 +142,12 @@ public class ItemCatalogue {
     }
 
     /**
+     *
+     * @return the number of items in this catalogue
+     */
+    public int getNumOfItems(){return this.items.size();}
+
+    /**
      * Print the items in this catalogue in a JSON-like format.
      */
     public void display() {

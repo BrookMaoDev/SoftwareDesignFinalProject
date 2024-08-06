@@ -7,21 +7,21 @@
     tools:context=".HomeFragment">
 
     <Button
-        android:id="@+id/buttonRecyclerView"
+        android:id="@+id/buttonSearch"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/recyclerview"
+        android:text="@string/search"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/buttonScroller"/>
+        app:layout_constraintBottom_toTopOf="@+id/buttonDisplay"/>
 
     <Button
-        android:id="@+id/buttonScroller"
+        android:id="@+id/buttonDisplay"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/scroller"
-        app:layout_constraintTop_toBottomOf="@+id/buttonRecyclerView"
+        android:text="@string/displayB"
+        app:layout_constraintTop_toBottomOf="@+id/buttonSearch"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/buttonSpinner"/>
@@ -30,12 +30,12 @@
         android:id="@+id/buttonSpinner"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/search"
+        android:text="@string/spinner"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonScroller" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonDisplay" />
 
     <Button
         android:id="@+id/buttonManageItems"

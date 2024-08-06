@@ -57,6 +57,7 @@
     <string name="display">String Result Based on </string>
     <string name="next_page">Next Page</string>
     <string name="search">Search Item</string>
+    <string name="displayB">Display Items</string>
 
     <string name="login">Login</string>
     <string name="logout">Logout</string>
