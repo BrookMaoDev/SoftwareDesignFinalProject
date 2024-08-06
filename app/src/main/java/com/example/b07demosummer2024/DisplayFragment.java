@@ -17,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,11 +37,10 @@ public class DisplayFragment extends Fragment {
     private ArrayList<TableRow> tableRowList;
     private String page;
 
-    public static DisplayFragment makeInstance(ItemCatalogue.Filter filter, String page){
+    public static DisplayFragment makeInstance(ItemCatalogue.Filter filter){
         // Set visibility to some feature based on string page
         DisplayFragment displayFragment = new DisplayFragment();
         displayFragment.filter = filter;
-        displayFragment.page = page;
         return displayFragment;
     }
 
@@ -59,18 +59,6 @@ public class DisplayFragment extends Fragment {
         itemCatalogue = DatabaseManager.getInstance().createItemCatalogue().withFilter(filter);
         itemCatalogue.applyFilter();
 
-        // Set visibility to some feature based on certain
-        if(page.equals("UserMainScreen")){
-            // only view and search are visible
-            // and an admin button to go to admin
-        }
-        else if(page.equals("UserSearchResult")){
-            // only view and back are visible
-            // and also a text on the top consisting
-            // of which lot, number, period, and category
-            // was searched
-        }
-
         tableRowList = new ArrayList<>(NUM_OF_ITEMS_PER_PAGE);
         for (int i = 0; i < NUM_OF_ITEMS_PER_PAGE; i++) {
             TableRow tableRow = (TableRow) inflater.inflate(R.layout.item_row, tableLayout, false);
@@ -83,6 +71,11 @@ public class DisplayFragment extends Fragment {
             public void onClick(View v) {
                 viewItem();
             }
+        });
+
+        buttonReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { loadFragment(new AdminReportFragment()); }
         });
 
         buttonBack.setOnClickListener(v -> getParentFragmentManager().popBackStack());
@@ -179,5 +172,11 @@ public class DisplayFragment extends Fragment {
             // pass the item to view item
             // but idk which one is for view item lol
         }
+    }
+    private void loadFragment(Fragment fragment) {
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }
