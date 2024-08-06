@@ -36,6 +36,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 
 import android.graphics.pdf.PdfDocument;
 
@@ -46,6 +47,8 @@ public class AdminReportFragment extends Fragment {
     private FirebaseDatabase db;
     private DatabaseReference itemsRef;
     private StorageReference storageRef;
+    private ItemCatalogue itemCatalogue;
+    private ArrayList<Item> items;
 
     ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == Activity.RESULT_OK) {
@@ -90,6 +93,14 @@ public class AdminReportFragment extends Fragment {
         buttonGenerate2.setOnClickListener(v -> handleButtonClick("Generate2"));
         buttonGenerate3.setOnClickListener(v -> handleButtonClick("Generate3"));
         buttonGenerate4.setOnClickListener(v -> handleButtonClick("Generate4"));
+
+        itemCatalogue = DatabaseManager.getInstance().createItemCatalogue();
+        itemCatalogue.onUpdate(() -> {
+            Toast.makeText(requireContext(), "RAWAD", Toast.LENGTH_SHORT).show();
+            items = itemCatalogue.getItems();
+            // Update UI with items
+        });
+        itemCatalogue.init();
 
         return view;
     }
@@ -164,10 +175,14 @@ public class AdminReportFragment extends Fragment {
 
         // Example data based on reportName
         String title = "Report: " + reportName;
-        String content = "This is the content for " + reportName + ". It contains dynamic data and information.";
+        StringBuilder content = new StringBuilder(String.format("%d", items.size()));
+
+        for (int i = 0; i < items.size(); i++) {
+            content.append(items.get(i).toString());
+        }
 
         textViewTitle.setText(title);
-        textViewContent.setText(content);
+        textViewContent.setText(content.toString());
 
         return view;
     }

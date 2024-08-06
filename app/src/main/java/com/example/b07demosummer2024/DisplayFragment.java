@@ -16,6 +16,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 public class DisplayFragment extends Fragment {
     private final static int NUM_OF_ITEMS_PER_PAGE = 5;
 
-    private Button buttonView, buttonBack, buttonNextPage, buttonPrevPage;
+    private Button buttonReport, buttonBack, buttonNextPage, buttonPrevPage;
     private TableLayout tableLayout;
     private int currentPage = 1;
     private int numberOfPages;
@@ -44,10 +45,10 @@ public class DisplayFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.fragment_display_item, container, false);
-        buttonView = view.findViewById(R.id.buttonView);
         buttonBack = view.findViewById(R.id.buttonBack);
         buttonNextPage = view.findViewById(R.id.buttonNextPage);
         buttonPrevPage = view.findViewById(R.id.buttonPrevPage);
+        buttonReport = view.findViewById(R.id.buttonReport);
         currentItems = new ArrayList<>();
         tableLayout = view.findViewById(R.id.tableLayout);
         pageNumber = view.findViewById(R.id.pageNumber);
@@ -61,11 +62,10 @@ public class DisplayFragment extends Fragment {
             tableRowList.add(row);
         }
 
-        /* buttonView.setOnClickListener({
-                @Override
-                public void onClick(View v){ loadFragment(new ViewFragment())
-                };
-        })*/
+        buttonReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { loadFragment(new AdminReportFragment()); }
+        });
 
         buttonBack.setOnClickListener(v -> getParentFragmentManager().popBackStack());
 
@@ -134,5 +134,12 @@ public class DisplayFragment extends Fragment {
         ((TextView) row.findViewById(R.id.categoryTextView)).setText(item.getCategory());
         ((TextView) row.findViewById(R.id.periodTextView)).setText(item.getPeriod());
         // loadImage((ImageView) row.findViewById(R.id.pictureImageView), item.getPictureUrl());
+    }
+
+    private void loadFragment(Fragment fragment) {
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }
