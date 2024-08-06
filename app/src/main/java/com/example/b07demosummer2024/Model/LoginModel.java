@@ -1,16 +1,9 @@
 package com.example.b07demosummer2024.Model;
 
-import android.content.Intent;
-import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 
-import com.example.b07demosummer2024.MainActivity;
 import com.example.b07demosummer2024.Presenter.LoginContract;
 import com.example.b07demosummer2024.Presenter.LoginPresenter;
-import com.example.b07demosummer2024.View.LoginActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
