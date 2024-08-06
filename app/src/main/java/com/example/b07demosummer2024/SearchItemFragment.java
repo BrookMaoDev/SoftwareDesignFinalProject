@@ -33,10 +33,8 @@ public class SearchItemFragment extends Fragment {
     private DatabaseReference itemsRef;
     private StorageReference storageRef;
     private Bitmap selectedImageBitmap;
-    ArrayList<Item> filteredList;
-    ItemAdapter adapter;
+    private ItemCatalogue items;
     private String category, period;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -78,6 +76,8 @@ public class SearchItemFragment extends Fragment {
         return view;
     }
 
+
+
     private void searchItem() {
         String lotNumber = editTextLotNumber.getText().toString().trim();
         String name = editTextName.getText().toString().toLowerCase().trim();
@@ -98,35 +98,25 @@ public class SearchItemFragment extends Fragment {
         }
 
         itemsRef = db.getReference("categories/" + category);
-        itemsRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ArrayList<Item> filteredResults = null;
-                boolean itemFound = false;
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Item item = snapshot.getValue(Item.class);
-                    if (item != null || item.getName().toLowerCase().contains(name) &&
-                            item.getLotNumber().contains(lotNumber) &&
-                            item.getCategory().contains(category) ||
-                            item.getPeriod().contains(period)) {
-                        itemFound = true;
-                        filteredResults.add(item);
-                    }
-                }
-                if (!itemFound) {
+
+        this.items = DatabaseManager.getInstance().createItemCatalogue();
+        this.items.onUpdate(() ->  {
+            ArrayList<Item> itemList = this.items.getItems();
+            this.items.init();
+            this.items.changeFilter(new ItemCatalogue.Filter()
+                    .category(category)
+                    .lotNumber(lotNumber)
+                    .name(name)
+                    .period(period));
+
+                if (itemList.isEmpty()) {
                     Toast.makeText(getContext(), "Item not found", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    //function displayItem() is in progress
+                    DisplayFragment.makeInstance(this.items.getFilter());
                 }
-
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getContext(), "Database error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-            }
         });
-    }
 
+    }
 
 }
