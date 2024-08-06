@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 public class DisplayFragment extends Fragment {
     private final static int NUM_OF_ITEMS_PER_PAGE = 5;
 
-    private Button buttonReport, buttonBack, buttonNextPage, buttonPrevPage;
+    private Button buttonView, buttonBack, buttonNextPage, buttonPrevPage, buttonReport;
     private TableLayout tableLayout;
     private int currentPage = 1;
     private int numberOfPages;
@@ -34,8 +35,10 @@ public class DisplayFragment extends Fragment {
     private ArrayList<Item> currentItems;
     private ItemCatalogue.Filter filter;
     private ArrayList<TableRow> tableRowList;
+    private String page;
 
     public static DisplayFragment makeInstance(ItemCatalogue.Filter filter){
+        // Set visibility to some feature based on string page
         DisplayFragment displayFragment = new DisplayFragment();
         displayFragment.filter = filter;
         return displayFragment;
@@ -45,10 +48,11 @@ public class DisplayFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.fragment_display_item, container, false);
+        buttonView = view.findViewById(R.id.buttonView);
         buttonBack = view.findViewById(R.id.buttonBack);
+        buttonReport = view.findViewById(R.id.buttonReport);
         buttonNextPage = view.findViewById(R.id.buttonNextPage);
         buttonPrevPage = view.findViewById(R.id.buttonPrevPage);
-        buttonReport = view.findViewById(R.id.buttonReport);
         currentItems = new ArrayList<>();
         tableLayout = view.findViewById(R.id.tableLayout);
         pageNumber = view.findViewById(R.id.pageNumber);
@@ -57,10 +61,17 @@ public class DisplayFragment extends Fragment {
 
         tableRowList = new ArrayList<>(NUM_OF_ITEMS_PER_PAGE);
         for (int i = 0; i < NUM_OF_ITEMS_PER_PAGE; i++) {
-            TableRow row = (TableRow) inflater.inflate(R.layout.item_row, tableLayout, false);
-            tableLayout.addView(row);
-            tableRowList.add(row);
+            TableRow tableRow = (TableRow) inflater.inflate(R.layout.item_row, tableLayout, false);
+            tableLayout.addView(tableRow);
+            tableRowList.add(tableRow);
         }
+
+        buttonView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewItem();
+            }
+        });
 
         buttonReport.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,18 +100,18 @@ public class DisplayFragment extends Fragment {
     private void loadPage(int currentPage){
         this.currentPage = currentPage;
         int startIndex = (currentPage - 1) * NUM_OF_ITEMS_PER_PAGE;
-        int endIndex = Math.min(startIndex + NUM_OF_ITEMS_PER_PAGE - 1,
+        int endIndex = Math.min(startIndex + NUM_OF_ITEMS_PER_PAGE,
                 itemCatalogue.getNumOfItems());
 
         currentItems.clear();
-        for(int i = startIndex; i <= endIndex; i++){
+        for(int i = startIndex; i < endIndex; i++){
             currentItems.add(itemCatalogue.getItems().get(i));
         }
 
         for(int i = 0; i < NUM_OF_ITEMS_PER_PAGE; i++){
             TableRow tableRow = tableRowList.get(i);
-            Item item = currentItems.get(i);
-            if(i + startIndex <= endIndex){
+            if(i + startIndex < endIndex){
+                Item item = currentItems.get(i);
                 bindItemToRow(item, tableRow);
                 tableRow.setVisibility(View.VISIBLE);
             }
@@ -123,19 +134,45 @@ public class DisplayFragment extends Fragment {
     private void updatePage(){
         String pageNumberText = "Page " + currentPage + " / " + numberOfPages;
         pageNumber.setText(pageNumberText);
-        buttonNextPage.setEnabled(currentPage > 1);
-        buttonPrevPage.setEnabled(currentPage < numberOfPages && currentPage > 1);
+        buttonNextPage.setEnabled(currentPage < numberOfPages);
+        buttonPrevPage.setEnabled(currentPage > 1);
     }
 
-    private void bindItemToRow(Item item, TableRow row) {
-        // how to bind check box to row?
-        ((TextView) row.findViewById(R.id.nameTextView)).setText(item.getName());
-        ((TextView) row.findViewById(R.id.lotNumberTextView)).setText(item.getLotNumber());
-        ((TextView) row.findViewById(R.id.categoryTextView)).setText(item.getCategory());
-        ((TextView) row.findViewById(R.id.periodTextView)).setText(item.getPeriod());
+    private void bindItemToRow(Item item, TableRow tableRow) {
+        ((CheckBox) tableRow.findViewById(R.id.checkBox)).setChecked(false);
+        ((TextView) tableRow.findViewById(R.id.nameTextView)).setText(item.getName());
+        ((TextView) tableRow.findViewById(R.id.lotNumberTextView)).setText(item.getLotNumber());
+        ((TextView) tableRow.findViewById(R.id.categoryTextView)).setText(item.getCategory());
+        ((TextView) tableRow.findViewById(R.id.periodTextView)).setText(item.getPeriod());
         // loadImage((ImageView) row.findViewById(R.id.pictureImageView), item.getPictureUrl());
     }
 
+    private void viewItem(){
+        int count = 0;
+        for(int i = 0; i < currentItems.size(); i++){
+            TableRow tableRow = tableRowList.get(i);
+            CheckBox checkBox = tableRow.findViewById(R.id.checkBox);
+            if(checkBox.isChecked()) count++;
+        }
+        if(count == 0){
+            Toast.makeText(getContext(), "Please check a box you want to view", Toast.LENGTH_SHORT).show();
+        }
+        else if(count > 1){
+            Toast.makeText(getContext(), "You can only view one item at a time", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Item item;
+            for(int i = 0; i < currentItems.size(); i++){
+                TableRow tableRow = tableRowList.get(i);
+                CheckBox checkBox = tableRow.findViewById(R.id.checkBox);
+                if(checkBox.isChecked()){
+                    item = currentItems.get(i);
+                }
+            }
+            // pass the item to view item
+            // but idk which one is for view item lol
+        }
+    }
     private void loadFragment(Fragment fragment) {
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment);

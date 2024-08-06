@@ -13,6 +13,8 @@
     <string name="period">Period</string>
     <string name="upload_item">Upload Image or Video</string>
     <string name="item_name">Item Name</string>
+    <string name="view">View</string>
+    <string name="report">Report</string>
 
     <string-array name="categories_array">
         <item>Jade</item>
