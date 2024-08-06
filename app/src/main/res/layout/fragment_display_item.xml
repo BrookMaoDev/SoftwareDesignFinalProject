@@ -57,17 +57,27 @@
 
         <Button
             android:id="@+id/buttonView"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:text="@string/view"/>
+            android:text="@string/view" />
 
         <Space
-            android:layout_width="240dp"
+            android:layout_width="55dp"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/buttonReport"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="@string/report" />
+
+        <Space
+            android:layout_width="55dp"
             android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/buttonBack"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="@string/back" />
 
