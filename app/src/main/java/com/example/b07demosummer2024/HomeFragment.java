@@ -1,7 +1,6 @@
 package com.example.b07demosummer2024;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,14 +27,14 @@ public class HomeFragment extends Fragment {
 
         Button buttonSearch = view.findViewById(R.id.buttonSearch);
         Button buttonDisplay = view.findViewById(R.id.buttonDisplay);
-        Button buttonSpinner = view.findViewById(R.id.buttonSpinner);
+        Button buttonReport = view.findViewById(R.id.buttonReport);
         Button buttonManageItems = view.findViewById(R.id.buttonManageItems);
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
         String uid = user.getUid();
 
-        Button[] adminButtons = {buttonManageItems};
+        Button[] adminButtons = {buttonManageItems, buttonReport};
         applyAdminPerms(uid, adminButtons);
 
         buttonSearch.setOnClickListener(new View.OnClickListener() {
@@ -48,9 +47,9 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) { loadFragment(new DisplayFragment()); }
         });
 
-        buttonSpinner.setOnClickListener(new View.OnClickListener() {
+        buttonReport.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) { loadFragment(new SpinnerFragment()); }
+            public void onClick(View v) { loadFragment(new AdminReportFragment()); }
         });
 
         buttonManageItems.setOnClickListener(new View.OnClickListener() {
