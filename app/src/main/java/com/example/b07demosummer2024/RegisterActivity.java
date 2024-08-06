@@ -19,6 +19,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.b07demosummer2024.View.LoginActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
@@ -163,21 +164,26 @@ public class RegisterActivity extends AppCompatActivity {
 
                 if(TextUtils.isEmpty(email)){
                     Toast.makeText(RegisterActivity.this, "Enter email", Toast.LENGTH_SHORT).show();
+                    emailEditText.requestFocus();
                     return;
                 }
 
                 if(TextUtils.isEmpty(password)){
                     Toast.makeText(RegisterActivity.this, "Enter password", Toast.LENGTH_SHORT).show();
+                    pwEditText.requestFocus();
                     return;
                 }
 
                 if(wantsAdmin && TextUtils.isEmpty(adminPIN)){
                     Toast.makeText(RegisterActivity.this, "Enter Admin PIN", Toast.LENGTH_SHORT).show();
+                    adminPwEditText.requestFocus();
                     return;
                 }
 
                 if(wantsAdmin && !(adminPwEditText.getText().toString().equals(trueAdminPIN))){
                     Toast.makeText(RegisterActivity.this, "Incorrect Admin PIN", Toast.LENGTH_SHORT).show();
+                    adminPwEditText.getText().clear();
+                    adminPwEditText.requestFocus();
                     return;
                 }
 
