@@ -25,7 +25,7 @@ import java.util.ArrayList;
 public class DisplayFragment extends Fragment {
     private final static int NUM_OF_ITEMS_PER_PAGE = 5;
 
-    private Button buttonView, buttonBack, buttonNextPage, buttonPrevPage;
+    private Button buttonView, buttonBack, buttonNextPage, buttonPrevPage, buttonReport;
     private TableLayout tableLayout;
     private int currentPage = 1;
     private int numberOfPages;
@@ -34,10 +34,13 @@ public class DisplayFragment extends Fragment {
     private ArrayList<Item> currentItems;
     private ItemCatalogue.Filter filter;
     private ArrayList<TableRow> tableRowList;
+    private String page;
 
-    public static DisplayFragment makeInstance(ItemCatalogue.Filter filter){
+    public static DisplayFragment makeInstance(ItemCatalogue.Filter filter, String page){
+        // Set visibility to some feature based on string page
         DisplayFragment displayFragment = new DisplayFragment();
         displayFragment.filter = filter;
+        displayFragment.page = page;
         return displayFragment;
     }
 
@@ -47,6 +50,7 @@ public class DisplayFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_display_item, container, false);
         buttonView = view.findViewById(R.id.buttonView);
         buttonBack = view.findViewById(R.id.buttonBack);
+        buttonReport = view.findViewById(R.id.buttonReport);
         buttonNextPage = view.findViewById(R.id.buttonNextPage);
         buttonPrevPage = view.findViewById(R.id.buttonPrevPage);
         currentItems = new ArrayList<>();
@@ -54,6 +58,18 @@ public class DisplayFragment extends Fragment {
         pageNumber = view.findViewById(R.id.pageNumber);
         itemCatalogue = DatabaseManager.getInstance().createItemCatalogue().withFilter(filter);
         itemCatalogue.applyFilter();
+
+        // Set visibility to some feature based on certain
+        if(page.equals("UserMainScreen")){
+            // only view and search are visible
+            // and an admin button to go to admin
+        }
+        else if(page.equals("UserSearchResult")){
+            // only view and back are visible
+            // and also a text on the top consisting
+            // of which lot, number, period, and category
+            // was searched
+        }
 
         tableRowList = new ArrayList<>(NUM_OF_ITEMS_PER_PAGE);
         for (int i = 0; i < NUM_OF_ITEMS_PER_PAGE; i++) {
@@ -101,8 +117,8 @@ public class DisplayFragment extends Fragment {
 
         for(int i = 0; i < NUM_OF_ITEMS_PER_PAGE; i++){
             TableRow tableRow = tableRowList.get(i);
-            Item item = currentItems.get(i);
             if(i + startIndex < endIndex){
+                Item item = currentItems.get(i);
                 bindItemToRow(item, tableRow);
                 tableRow.setVisibility(View.VISIBLE);
             }
@@ -130,6 +146,7 @@ public class DisplayFragment extends Fragment {
     }
 
     private void bindItemToRow(Item item, TableRow tableRow) {
+        ((CheckBox) tableRow.findViewById(R.id.checkBox)).setChecked(false);
         ((TextView) tableRow.findViewById(R.id.nameTextView)).setText(item.getName());
         ((TextView) tableRow.findViewById(R.id.lotNumberTextView)).setText(item.getLotNumber());
         ((TextView) tableRow.findViewById(R.id.categoryTextView)).setText(item.getCategory());
