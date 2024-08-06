@@ -123,8 +123,8 @@ public class DisplayFragment extends Fragment {
     private void updatePage(){
         String pageNumberText = "Page " + currentPage + " / " + numberOfPages;
         pageNumber.setText(pageNumberText);
-        buttonNextPage.setEnabled(currentPage > 1);
-        buttonPrevPage.setEnabled(currentPage < numberOfPages && currentPage > 1);
+        buttonNextPage.setEnabled(currentPage < numberOfPages);
+        buttonPrevPage.setEnabled(currentPage > 1);
     }
 
     private void bindItemToRow(Item item, TableRow row) {

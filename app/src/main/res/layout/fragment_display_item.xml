@@ -58,7 +58,8 @@
         <Button
             android:id="@+id/buttonView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="@string/view"/>
 
         <Space
             android:layout_width="240dp"
