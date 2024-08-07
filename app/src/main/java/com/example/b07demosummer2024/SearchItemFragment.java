@@ -88,12 +88,6 @@ public class SearchItemFragment extends Fragment {
             period = spinnerPeriod.getSelectedItem().toString().toLowerCase();
         }
 
-        if (lotNumber.isEmpty() || name.isEmpty() || category == null || period == null ) {
-            Toast.makeText(getContext(), "Please fill out all fields", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        itemsRef = db.getReference("categories/" + category);
         this.items = DatabaseManager.getInstance().createItemCatalogue();
         this.items.init();
         this.items.onUpdate(() -> {
