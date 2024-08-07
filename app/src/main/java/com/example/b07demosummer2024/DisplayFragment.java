@@ -23,6 +23,14 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 
 public class DisplayFragment extends Fragment {
@@ -60,6 +68,13 @@ public class DisplayFragment extends Fragment {
         pageNumber = view.findViewById(R.id.pageNumber);
         itemCatalogue = DatabaseManager.getInstance().createItemCatalogue().withFilter(filter);
         itemCatalogue.applyFilter();
+
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser user = auth.getCurrentUser();
+        String uid = user.getUid();
+
+        Button[] adminButtons = {buttonReport};
+        applyAdminPerms(uid, adminButtons);
 
         tableRowList = new ArrayList<>(NUM_OF_ITEMS_PER_PAGE);
         for (int i = 0; i < NUM_OF_ITEMS_PER_PAGE; i++) {
@@ -188,5 +203,30 @@ public class DisplayFragment extends Fragment {
         transaction.replace(R.id.fragment_container, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    private void applyAdminPerms(String uid, Button[] B) {
+        FirebaseDatabase db = FirebaseDatabase.getInstance("https://softwaredesignfinalproje-5aa70-default-rtdb.firebaseio.com");
+        DatabaseReference dbref = db.getReference("admins/" + uid);
+
+        dbref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                boolean isAdmin = snapshot.exists();
+
+                for (Button b : B) {
+                    b.setEnabled(isAdmin);
+                    if (isAdmin) {
+                        b.setVisibility(View.VISIBLE);
+                    } else {
+                        b.setVisibility(View.GONE);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
     }
 }
