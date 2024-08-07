@@ -1,6 +1,8 @@
 package com.example.b07demosummer2024;
 
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -161,7 +163,7 @@ public class DisplayFragment extends Fragment {
             Toast.makeText(getContext(), "You can only view one item at a time", Toast.LENGTH_SHORT).show();
         }
         else{
-            Item item;
+            Item item = null;
             for(int i = 0; i < currentItems.size(); i++){
                 TableRow tableRow = tableRowList.get(i);
                 CheckBox checkBox = tableRow.findViewById(R.id.checkBox);
@@ -171,8 +173,16 @@ public class DisplayFragment extends Fragment {
             }
             // pass the item to view item
             // but idk which one is for view item lol
+
+            new ItemWithImage.Loader(item) {
+                @Override
+                public void onLoad(ItemWithImage item) {
+                    loadFragment(ItemInfoFragment.fromItem(item));
+                }
+            }.execute();
         }
     }
+
     private void loadFragment(Fragment fragment) {
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment);
