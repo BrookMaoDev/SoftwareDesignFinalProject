@@ -16,6 +16,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.b07demosummer2024.MainActivity;
+import com.example.b07demosummer2024.Model.LoginModel;
 import com.example.b07demosummer2024.Presenter.LoginContract;
 import com.example.b07demosummer2024.Presenter.LoginPresenter;
 import com.example.b07demosummer2024.R;
@@ -54,7 +55,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         progress = findViewById(R.id.progress);
         logButton = findViewById(R.id.login_btn);
         regTextView = findViewById(R.id.signupClick);
-        presenter = new LoginPresenter(this);
+        presenter = new LoginPresenter(this, new LoginModel());
 
         regTextView.setOnClickListener(new View.OnClickListener() {
             @Override
