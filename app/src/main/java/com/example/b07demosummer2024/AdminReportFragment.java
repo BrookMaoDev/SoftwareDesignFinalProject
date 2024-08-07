@@ -39,11 +39,12 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 
 import android.graphics.pdf.PdfDocument;
+import android.text.Html;
 
 public class AdminReportFragment extends Fragment {
     private EditText editTextLotNumber, editTextName, editTextCategory, editTextPeriod;
-    private Button buttonLotNum, buttonName, buttonCategory, buttonPeriod;
-    private Button buttonGenerate1, buttonGenerate2, buttonGenerate3, buttonGenerate4;
+    private Button buttonLotNumber, buttonName, buttonCategory, buttonPeriod;
+    private Button buttonGenerate1, buttonGenerate2, buttonGenerate3, buttonGenerate4, buttonCancel;
     private FirebaseDatabase db;
     private DatabaseReference itemsRef;
     private StorageReference storageRef;
@@ -75,7 +76,7 @@ public class AdminReportFragment extends Fragment {
         editTextPeriod = view.findViewById(R.id.editTextPeriod);
 
         // Initialize buttons
-        buttonLotNum = view.findViewById(R.id.buttonLotNum);
+        buttonLotNumber = view.findViewById(R.id.buttonLotNumber);
         buttonName = view.findViewById(R.id.buttonName);
         buttonCategory = view.findViewById(R.id.buttonCategory);
         buttonPeriod = view.findViewById(R.id.buttonPeriod);
@@ -83,9 +84,10 @@ public class AdminReportFragment extends Fragment {
         buttonGenerate2 = view.findViewById(R.id.buttonGenerate2);
         buttonGenerate3 = view.findViewById(R.id.buttonGenerate3);
         buttonGenerate4 = view.findViewById(R.id.buttonGenerate4);
+        buttonCancel = view.findViewById(R.id.buttonCancel);
 
         // Set click listeners using lambda expressions (Java 8+)
-        buttonLotNum.setOnClickListener(v -> handleButtonClick("LotNum"));
+        buttonLotNumber.setOnClickListener(v -> handleButtonClick("LotNumber"));
         buttonName.setOnClickListener(v -> handleButtonClick("Name"));
         buttonCategory.setOnClickListener(v -> handleButtonClick("Category"));
         buttonPeriod.setOnClickListener(v -> handleButtonClick("Period"));
@@ -93,67 +95,151 @@ public class AdminReportFragment extends Fragment {
         buttonGenerate2.setOnClickListener(v -> handleButtonClick("Generate2"));
         buttonGenerate3.setOnClickListener(v -> handleButtonClick("Generate3"));
         buttonGenerate4.setOnClickListener(v -> handleButtonClick("Generate4"));
+        buttonCancel.setOnClickListener(v -> getParentFragmentManager().popBackStack());
 
         itemCatalogue = DatabaseManager.getInstance().createItemCatalogue();
         itemCatalogue.onUpdate(() -> {
-            Toast.makeText(requireContext(), "RAWAD", Toast.LENGTH_SHORT).show();
             items = itemCatalogue.getItems();
-            // Update UI with items
         });
         itemCatalogue.init();
 
         return view;
     }
 
-    private void addInformation() {
+    private void handleButtonClick(String buttonName) {
         String lotNumber = editTextLotNumber.getText().toString().trim();
         String name = editTextName.getText().toString().trim();
         String category = editTextCategory.getText().toString().trim();
         String period = editTextPeriod.getText().toString().trim();
-    }
+        items = itemCatalogue.getItems();
 
-    private void handleButtonClick(String buttonName) {
         switch (buttonName) {
-            case "LotNum":
-                // Action for buttonLotNum
+            case "LotNumber":
+                if (lotNumber.isEmpty()) {
+                    Toast.makeText(requireContext(), "Lot Number cannot be empty", Toast.LENGTH_SHORT).show();
+                } else {
+                    itemCatalogue.changeFilter(new ItemCatalogue.Filter().lotNumber(lotNumber));
+                    if (items.isEmpty()) {
+                        Toast.makeText(requireContext(), "Invalid Lot Number", Toast.LENGTH_SHORT).show();
+                    } else {
+                        generatePdf("Report of lot number");
+                    }
+                }
                 break;
             case "Name":
-                // Action for buttonName
+                if (name.isEmpty()) {
+                    Toast.makeText(requireContext(), "Name cannot be empty", Toast.LENGTH_SHORT).show();
+                } else {
+                    itemCatalogue.changeFilter(new ItemCatalogue.Filter().name(name));
+                    if (items.isEmpty()) {
+                        Toast.makeText(requireContext(), "Invalid Name", Toast.LENGTH_SHORT).show();
+                    } else {
+                        generatePdf("Report of name");
+                    }
+                }
                 break;
             case "Category":
-                // Action for buttonCategory
+                if (category.isEmpty()) {
+                    Toast.makeText(requireContext(), "Category cannot be empty", Toast.LENGTH_SHORT).show();
+                } else {
+                    itemCatalogue.changeFilter(new ItemCatalogue.Filter().category(category));
+                    if (items.isEmpty()) {
+                        Toast.makeText(requireContext(), "Invalid Category", Toast.LENGTH_SHORT).show();
+                    } else {
+                        generatePdf("Report of category");
+                    }
+                }
                 break;
             case "Period":
-                // Action for buttonPeriod
+                if (period.isEmpty()) {
+                    Toast.makeText(requireContext(), "Period cannot be empty", Toast.LENGTH_SHORT).show();
+                } else {
+                    itemCatalogue.changeFilter(new ItemCatalogue.Filter().period(period));
+                    if (items.isEmpty()) {
+                        Toast.makeText(requireContext(), "Invalid Period", Toast.LENGTH_SHORT).show();
+                    } else {
+                        generatePdf("Report of period");
+                    }
+                }
                 break;
             case "Generate1":
-                generatePdf("Report1");
+                itemCatalogue.changeFilter(new ItemCatalogue.Filter().category(category));
+                if (category.isEmpty()) {
+                    Toast.makeText(requireContext(), "Category cannot be empty", Toast.LENGTH_SHORT).show();
+                } else if (items.isEmpty()) {
+                    Toast.makeText(requireContext(), "Invalid Category", Toast.LENGTH_SHORT).show();
+                } else {
+                    generatePdf("Report of category, description and picture only");
+                }
                 break;
             case "Generate2":
-                generatePdf("Report2");
+                itemCatalogue.changeFilter(new ItemCatalogue.Filter().period(period));
+                if (period.isEmpty()) {
+                    Toast.makeText(requireContext(), "Period cannot be empty", Toast.LENGTH_SHORT).show();
+                } else if (items.isEmpty()) {
+                    Toast.makeText(requireContext(), "Invalid Period", Toast.LENGTH_SHORT).show();
+                } else {
+                    generatePdf("Report of period, description and picture only");
+                }
                 break;
             case "Generate3":
-                generatePdf("Report3");
+                generatePdf("Report of all items");
                 break;
             case "Generate4":
-                generatePdf("Report4");
+                generatePdf("Report of all items with description and picture only");
                 break;
             default:
                 throw new IllegalArgumentException("Unexpected button name: " + buttonName);
         }
     }
 
+    private View createDynamicLayoutForItem(Item item) {
+        LayoutInflater inflater = LayoutInflater.from(requireContext());
+        View view = inflater.inflate(R.layout.fragment_generated_report, null);
+
+        TextView textViewTitle = view.findViewById(R.id.textViewTitle);
+        TextView textViewContent = view.findViewById(R.id.textViewContent);
+
+        // Set data for each item with improved formatting
+        String title = "Item Report";
+        String content = "<html><body>" +
+                "<h2>Item Details</h2>" +
+                "<p><strong>Category:</strong> " + item.getCategory() + "</p>" +
+                "<p><strong>Description:</strong> " + item.getDescription() + "</p>" +
+                "<p><strong>Lot Number:</strong> " + item.getLotNumber() + "</p>" +
+                "<p><strong>Name:</strong> " + item.getName() + "</p>" +
+                "<p><strong>Period:</strong> " + item.getPeriod() + "</p>" +
+                "<p><strong>Save Path:</strong> " + item.getSavePath() + "</p>" +
+                "</body></html>";
+
+        textViewTitle.setText(title);
+        textViewContent.setText(Html.fromHtml(content, Html.FROM_HTML_MODE_LEGACY)); // For HTML formatting
+
+        return view;
+    }
+
     private void generatePdf(String reportName) {
-        // Create dynamic layout
-        View view = createDynamicLayout(reportName);
-
-        // Render the layout to a bitmap
-        Bitmap bitmap = createBitmapFromView(view);
-
-        // Convert the bitmap to a PDF
         try {
             File pdfFile = new File(requireContext().getExternalFilesDir(null), reportName + ".pdf");
-            saveBitmapToPDF(bitmap, pdfFile);
+
+            PdfDocument document = new PdfDocument();
+
+            for (int i = 0; i < items.size(); i++) {
+                // Create a page for each item
+                View view = createDynamicLayoutForItem(items.get(i)); // Pass each item to the layout creation
+                Bitmap bitmap = createBitmapFromView(view);
+
+                PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(bitmap.getWidth(), bitmap.getHeight(), i + 1).create();
+                PdfDocument.Page page = document.startPage(pageInfo);
+                Canvas canvas = page.getCanvas();
+                canvas.drawBitmap(bitmap, 0, 0, null);
+                document.finishPage(page);
+            }
+
+            try (FileOutputStream fos = new FileOutputStream(pdfFile)) {
+                document.writeTo(fos);
+            }
+            document.close();
 
             // Download the generated PDF
             downloadPDF(requireContext(), pdfFile);
@@ -174,8 +260,8 @@ public class AdminReportFragment extends Fragment {
         TextView textViewContent = view.findViewById(R.id.textViewContent);
 
         // Example data based on reportName
-        String title = "Report: " + reportName;
-        StringBuilder content = new StringBuilder(String.format("%d", items.size()));
+        String title = reportName;
+        StringBuilder content = new StringBuilder();
 
         for (int i = 0; i < items.size(); i++) {
             content.append(items.get(i).toString());
