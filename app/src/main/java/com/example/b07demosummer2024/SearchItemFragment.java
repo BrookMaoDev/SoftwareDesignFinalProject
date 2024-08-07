@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,7 +28,7 @@ import java.util.ArrayList;
 
 public class SearchItemFragment extends Fragment {
     private EditText editTextLotNumber, editTextName;
-    private Button buttonUpload, buttonResult;
+    private Button buttonResult, buttonBack;
     private Spinner spinnerCategory, spinnerPeriod;
     private FirebaseDatabase db;
     private DatabaseReference itemsRef;
@@ -45,7 +46,7 @@ public class SearchItemFragment extends Fragment {
         spinnerPeriod = view.findViewById(R.id.spinnerPeriod);
         spinnerCategory = view.findViewById(R.id.spinnerCategory);
         buttonResult = view.findViewById(R.id.buttonResult);
-        buttonUpload = view.findViewById(R.id.buttonUpload);
+        buttonBack = view.findViewById(R.id.buttonBack);
 
         db = FirebaseDatabase.getInstance("https://softwaredesignfinalproje-5aa70-default-rtdb.firebaseio.com/");
 
@@ -68,15 +69,10 @@ public class SearchItemFragment extends Fragment {
             }
         });
 
-        buttonUpload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
+        buttonBack.setOnClickListener(v -> getParentFragmentManager().popBackStack());
+
         return view;
     }
-
-
 
     private void searchItem() {
         String lotNumber = editTextLotNumber.getText().toString().trim();
@@ -98,25 +94,28 @@ public class SearchItemFragment extends Fragment {
         }
 
         itemsRef = db.getReference("categories/" + category);
-
         this.items = DatabaseManager.getInstance().createItemCatalogue();
-        this.items.onUpdate(() ->  {
-            ArrayList<Item> itemList = this.items.getItems();
-            this.items.init();
+        this.items.init();
+        this.items.onUpdate(() -> {
             this.items.changeFilter(new ItemCatalogue.Filter()
                     .category(category)
                     .lotNumber(lotNumber)
                     .name(name)
                     .period(period));
-
-                if (itemList.isEmpty()) {
-                    Toast.makeText(getContext(), "Item not found", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    DisplayFragment.makeInstance(this.items.getFilter());
-                }
+            this.items.applyFilter();
+            if (this.items.getNumOfItems() == 0) {
+                Toast.makeText(getContext(), "Item not found", Toast.LENGTH_SHORT).show();
+            } else {
+                loadFragment(DisplayFragment.makeInstance(this.items.getFilter()));
+            }
         });
-
     }
 
+    private void loadFragment(Fragment fragment) {
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
 }
+
