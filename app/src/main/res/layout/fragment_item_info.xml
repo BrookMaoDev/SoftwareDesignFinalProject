@@ -52,12 +52,11 @@
             <TextView
                 android:id="@+id/textViewItemName"
                 style="@style/LargeText"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="20dp"
                 android:ellipsize="end"
-                android:maxWidth="323dp"
                 android:singleLine="false"
                 android:text="@string/item_name"
                 android:textAlignment="viewStart" />
@@ -65,12 +64,11 @@
             <TextView
                 android:id="@+id/textViewItemCategory"
                 style="@style/NormalText"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="8dp"
                 android:ellipsize="end"
-                android:maxWidth="323dp"
                 android:singleLine="false"
                 android:text="@string/category"
                 android:textAlignment="viewStart" />
@@ -78,12 +76,11 @@
             <TextView
                 android:id="@+id/textViewItemPeriod"
                 style="@style/NormalText"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="8dp"
                 android:ellipsize="end"
-                android:maxWidth="323dp"
                 android:singleLine="false"
                 android:text="@string/period"
                 android:textAlignment="viewStart" />
@@ -91,12 +88,11 @@
             <TextView
                 android:id="@+id/textViewItemLot"
                 style="@style/NormalText"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="8dp"
                 android:ellipsize="end"
-                android:maxWidth="323dp"
                 android:singleLine="false"
                 android:text="@string/lot"
                 android:textAlignment="viewStart" />
@@ -104,12 +100,11 @@
             <TextView
                 android:id="@+id/textViewItemDescription"
                 style="@style/NormalText"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="16dp"
                 android:ellipsize="end"
-                android:maxWidth="323dp"
                 android:paddingBottom="120dp"
                 android:singleLine="false"
                 android:text="@string/description"
