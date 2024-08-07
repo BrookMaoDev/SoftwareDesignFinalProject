@@ -162,10 +162,10 @@ public class ItemCatalogue {
     public static class Filter {
 
         // Filter parameters
-        String category;
-        String lotNumber;
-        String period;
-        String name;
+        StringChecker category;
+        StringChecker lotNumber;
+        StringChecker period;
+        StringChecker name;
 
         // Attributes to sort by
         String[] keys;
@@ -175,8 +175,8 @@ public class ItemCatalogue {
 
         public Filter() {}
 
-        private Filter(String category, String lotNumber, String period, String name, String[] keys,
-                       boolean descending) {
+        private Filter(StringChecker category, StringChecker lotNumber, StringChecker period,
+                       StringChecker name, String[] keys, boolean descending) {
             this.category = category;
             this.lotNumber = lotNumber;
             this.period = period;
@@ -186,22 +186,42 @@ public class ItemCatalogue {
         }
 
         public Filter category(String category) {
-            this.category = category;
+            this.category = new StringChecker(category, false);
             return this;
         }
 
         public Filter lotNumber(String lotNumber) {
-            this.lotNumber = lotNumber;
+            this.lotNumber = new StringChecker(lotNumber, false);
             return this;
         }
 
         public Filter period(String period) {
-            this.period = period;
+            this.period = new StringChecker(period, false);
             return this;
         }
 
         public Filter name(String name) {
-            this.name = name;
+            this.name = new StringChecker(name, false);
+            return this;
+        }
+
+        public Filter categoryEquals(String category) {
+            this.category = new StringChecker(category, true);
+            return this;
+        }
+
+        public Filter lotNumberEquals(String lotNumber) {
+            this.lotNumber = new StringChecker(lotNumber, true);
+            return this;
+        }
+
+        public Filter periodEquals(String period) {
+            this.period = new StringChecker(period, true);
+            return this;
+        }
+
+        public Filter nameEquals(String name) {
+            this.name = new StringChecker(name, true);
             return this;
         }
 
@@ -224,7 +244,8 @@ public class ItemCatalogue {
          * @return a copy of this builder
          */
         public Filter duplicate() {
-            return new Filter(this.category, this.lotNumber, this.period, this.name, this.keys,
+            return new Filter(this.category.duplicate(), this.lotNumber.duplicate(),
+                    this.period.duplicate(), this.name.duplicate(), this.keys.clone(),
                     this.descending);
         }
 
@@ -245,23 +266,19 @@ public class ItemCatalogue {
          * @return whether or not this filter accepts an item
          */
         public boolean accepts(Item item) {
-            if (this.category != null
-                    && !StringUtil.containsIgnoreCase(item.getCategory(), this.category)) {
+            if (this.category != null && !this.category.matches(item.getCategory())) {
                 return false;
             }
 
-            if (this.lotNumber != null
-                    && !StringUtil.containsIgnoreCase(item.getLotNumber(), this.lotNumber)) {
+            if (this.lotNumber != null && !this.lotNumber.matches(item.getLotNumber())) {
                 return false;
             }
 
-            if (this.period != null &&
-                    !StringUtil.containsIgnoreCase(item.getPeriod(), this.period)) {
+            if (this.period != null && !this.period.matches(item.getPeriod())) {
                 return false;
             }
 
-            if (this.name != null
-                    && !StringUtil.containsIgnoreCase(item.getName(), this.name)) {
+            if (this.name != null && !this.name.matches(item.getName())) {
                 return false;
             }
 
@@ -339,6 +356,58 @@ public class ItemCatalogue {
                     && this.descending == that.descending;
         }
 
+    }
+
+}
+
+class StringChecker {
+
+    // The internal value of the checker
+    String value;
+
+    // Whether or not the checked value has to be exact
+    boolean exact;
+
+    public StringChecker(String value, boolean exact) {
+        this.value = value;
+        this.exact = exact;
+    }
+
+    /**
+     * @param value the value to check
+     * @return true iff this checker accepts `value`
+     */
+    public boolean matches(String value) {
+        if (this.exact) {
+            return this.value.equalsIgnoreCase(value);
+        } else {
+            return StringUtil.containsIgnoreCase(value, this.value);
+        }
+    }
+
+    /**
+     * @return a copy of this StringChecker
+     */
+    public StringChecker duplicate() {
+        return new StringChecker(this.value, this.exact);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) {
+            return false;
+        }
+
+        if (o == this) {
+            return true;
+        }
+
+        if (!(o instanceof StringChecker)) {
+            return false;
+        }
+
+        StringChecker that = (StringChecker) o;
+        return this.value.equals(that.value) && this.exact == that.exact;
     }
 
 }
