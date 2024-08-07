@@ -15,7 +15,7 @@
         android:id="@+id/lotNumberTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="0.5"
         android:padding="3dip" />
 
     <TextView
@@ -40,9 +40,10 @@
         android:padding="3dip" />
 
     <ImageView
-        android:id="@+id/pictureImageView"
-        android:layout_width="50dp"
+        android:id="@+id/imageView"
+        android:layout_width="0dp"
         android:layout_height="50dp"
+        android:layout_weight="1"
         android:scaleType="centerCrop"
         android:padding="3dip" />
 

@@ -87,7 +87,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonBack"
-            style="@style/ButtonB"
+            style="@style/ButtonG"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="6dp"
@@ -104,7 +104,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonPrevPage"
-            style="@style/ButtonG"
+            style="@style/ButtonB"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="6dp"
@@ -121,7 +121,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonNextPage"
-            style="@style/ButtonG"
+            style="@style/ButtonB"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="6dp"
