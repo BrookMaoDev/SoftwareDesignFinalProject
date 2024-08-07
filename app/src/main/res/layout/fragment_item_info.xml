@@ -5,16 +5,17 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingHorizontal="36dp"
+    android:paddingHorizontal="50dp"
     tools:context=".ItemInfoFragment">
 
     <ScrollView
         android:id="@+id/scrollView2"
-        android:layout_width="412dp"
+        android:layout_width="match_parent"
         android:layout_height="595dp"
         android:fadingEdgeLength="80dp"
         android:requiresFadingEdge="vertical"
         app:layout_constraintStart_toStartOf="parent"
+        android:scrollbars="none"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
@@ -22,22 +23,31 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardViewItem"
-                android:layout_width="323dp"
-                android:layout_height="323dp"
-                android:layout_marginStart="0dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_marginTop="30dp"
-                app:cardCornerRadius="30dp"
-                app:cardElevation="0dp">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-                <ImageView
-                    android:id="@+id/imageViewItem"
-                    android:layout_width="323dp"
-                    android:layout_height="323dp"
-                    android:scaleType="centerCrop"
-                    tools:src="@tools:sample/backgrounds/scenic" />
-            </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardViewItem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    app:cardCornerRadius="30dp"
+                    app:cardElevation="0dp"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/imageViewItem"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        tools:src="@tools:sample/backgrounds/scenic" />
+                </androidx.cardview.widget.CardView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
                 android:id="@+id/textViewItemName"
