@@ -75,11 +75,12 @@
     <string name="password">Password</string>
     <string name="submit">Submit</string>
     <string name="have_account">Already have an account?</string>
-    <string name="click_login">Click here to <u>Login</u>.</string>
+    <string name="click_login">Press here to <u><b>Login</b></u>.</string>
     <string name="no_account">Don\'t have an account yet?</string>
-    <string name="click_signup">Click here to <u>Sign Up</u>.</string>
+    <string name="click_signup">Press here to <u><b>Sign Up</b></u>.</string>
     <string name="admin_box">Admin</string>
     <string name="adminPIN">Admin PIN</string>
     <string name="atleast">Password must be at least 6 characters</string>
+    <string name="passwordMessage">For marking/testing purposes:\nAdmin PIN is <b>12345</b></string>
 
 </resources>
