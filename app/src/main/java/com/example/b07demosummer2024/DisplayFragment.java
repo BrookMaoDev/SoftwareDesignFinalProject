@@ -126,9 +126,7 @@ public class DisplayFragment extends Fragment {
         itemCatalogue.init();
 
         if(filter != null){
-            String searchBasedOn = "Seacrh based on lot number: " + filter.lotNumber + ", name: "
-                    + filter.name + ", category: " + filter.category + ", period: " + filter.period;
-            textView.setText(searchBasedOn);
+            textView.setText("Search results");
         }
 
         return view;
