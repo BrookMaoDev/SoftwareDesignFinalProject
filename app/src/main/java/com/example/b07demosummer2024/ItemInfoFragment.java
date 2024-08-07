@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -64,6 +65,9 @@ public class ItemInfoFragment extends Fragment {
         this.textViewLot.setText(this.item.getLotNumber());
         this.textViewCategory.setText(this.item.getCategory());
         this.textViewDescription.setText(this.item.getDescription());
+
+        view.findViewById(R.id.buttonItemBack).setOnClickListener(
+                v -> getParentFragmentManager().popBackStack());
 
         return view;
     }
