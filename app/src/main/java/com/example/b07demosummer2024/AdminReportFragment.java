@@ -44,6 +44,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import android.os.Handler;
 import android.os.Looper;
+import java.io.InputStream;
+import java.net.URL;
+import android.graphics.BitmapFactory;
+import android.widget.ImageView;
+import androidx.core.content.ContextCompat;
 
 public class AdminReportFragment extends Fragment {
     private EditText editTextLotNumber, editTextName, editTextCategory, editTextPeriod;
@@ -137,11 +142,11 @@ public class AdminReportFragment extends Fragment {
                 if (lotNumber.isEmpty()) {
                     Toast.makeText(requireContext(), "Lot Number cannot be empty", Toast.LENGTH_SHORT).show();
                 } else {
-                    itemCatalogue.changeFilter(new ItemCatalogue.Filter().lotNumber(lotNumber));
+                    itemCatalogue.changeFilter(new ItemCatalogue.Filter().lotNumberEquals(lotNumber));
                     if (items.isEmpty()) {
                         Toast.makeText(requireContext(), "Invalid Lot Number", Toast.LENGTH_SHORT).show();
                     } else {
-                        generatePdfInBackground("Report of lot number", true, true, true);
+                        generatePdfInBackground("Report of lot number", true, true, true, true);
                     }
                 }
                 clearEditTextFields();
@@ -154,7 +159,7 @@ public class AdminReportFragment extends Fragment {
                     if (items.isEmpty()) {
                         Toast.makeText(requireContext(), "Invalid Name", Toast.LENGTH_SHORT).show();
                     } else {
-                        generatePdfInBackground("Report of name", true, true, true);
+                        generatePdfInBackground("Report of name", true, true, true, true);
                     }
                 }
                 clearEditTextFields();
@@ -167,7 +172,7 @@ public class AdminReportFragment extends Fragment {
                     if (items.isEmpty()) {
                         Toast.makeText(requireContext(), "Invalid Category", Toast.LENGTH_SHORT).show();
                     } else {
-                        generatePdfInBackground("Report of category", true, true, true);
+                        generatePdfInBackground("Report of category", true, true, true, true);
                     }
                 }
                 clearEditTextFields();
@@ -180,7 +185,7 @@ public class AdminReportFragment extends Fragment {
                     if (items.isEmpty()) {
                         Toast.makeText(requireContext(), "Invalid Period", Toast.LENGTH_SHORT).show();
                     } else {
-                        generatePdfInBackground("Report of period", true, true, true);
+                        generatePdfInBackground("Report of period", true, true, true, true);
                     }
                 }
                 clearEditTextFields();
@@ -193,7 +198,7 @@ public class AdminReportFragment extends Fragment {
                     if (items.isEmpty()) {
                         Toast.makeText(requireContext(), "Invalid Category", Toast.LENGTH_SHORT).show();
                     } else {
-                        generatePdfInBackground("Report of category and description only", true, false, true);
+                        generatePdfInBackground("Report of category, description and image only", false, false, true, false);
                     }
                 }
                 clearEditTextFields();
@@ -206,17 +211,17 @@ public class AdminReportFragment extends Fragment {
                     if (items.isEmpty()) {
                         Toast.makeText(requireContext(), "Invalid Period", Toast.LENGTH_SHORT).show();
                     } else {
-                        generatePdfInBackground("Report of period and description only", false, true, true);
+                        generatePdfInBackground("Report of period, description and image only", false, false, false, true);
                     }
                 }
                 clearEditTextFields();
                 break;
             case "Generate3":
-                generatePdfInBackground("Report of all items", true, true, true);
+                generatePdfInBackground("Report of all items", true, true, true, true);
                 clearEditTextFields();
                 break;
             case "Generate4":
-                generatePdfInBackground("Report of description only", false, false, true);
+                generatePdfInBackground("Report of description and image only", false, false, false, false);
                 clearEditTextFields();
                 break;
             default:
@@ -232,39 +237,51 @@ public class AdminReportFragment extends Fragment {
         editTextPeriod.setText("");
     }
 
-    private void generatePdfInBackground(String reportName, boolean includeCategory, boolean includePeriod, boolean includeDescription) {
+    private void generatePdfInBackground(String reportName, boolean includeLotNumber, boolean includeName, boolean includeCategory, boolean includePeriod) {
         executorService.submit(() -> {
-            generatePdf(reportName, includeCategory, includePeriod, includeDescription);
+            generatePdf(reportName, includeLotNumber, includeName, includeCategory, includePeriod);
         });
     }
 
-    private View createDynamicLayoutForItem(String reportName, Item item, boolean includeCategory, boolean includePeriod, boolean includeDescription) {
+    private View createDynamicLayoutForItem(String reportName, Item item, boolean includeLotNumber, boolean includeName, boolean includeCategory, boolean includePeriod) {
         LayoutInflater inflater = LayoutInflater.from(requireContext());
         View view = inflater.inflate(R.layout.fragment_generated_report, null);
 
         TextView textViewTitle = view.findViewById(R.id.textViewTitle);
         TextView textViewContent = view.findViewById(R.id.textViewContent);
+        ImageView imageView = view.findViewById(R.id.imageView);
 
         // Set data for each item with conditional formatting
         StringBuilder content = new StringBuilder();
-
+        if (includeLotNumber) {
+            content.append("<p><strong>Lot Number:</strong> ").append(item.getLotNumber()).append("</p>");
+        }
+        if (includeName) {
+            content.append("<p><strong>Name:</strong> ").append(item.getName()).append("</p>");
+        }
         if (includeCategory) {
             content.append("<p><strong>Category:</strong> ").append(item.getCategory()).append("</p>");
         }
         if (includePeriod) {
             content.append("<p><strong>Period:</strong> ").append(item.getPeriod()).append("</p>");
         }
-        if (includeDescription) {
-            content.append("<p><strong>Description:</strong> ").append(item.getDescription()).append("</p>");
-        }
+        content.append("<p><strong>Description:</strong> ").append(item.getDescription()).append("</p>");
 
         textViewTitle.setText(reportName);
         textViewContent.setText(Html.fromHtml(content.toString(), Html.FROM_HTML_MODE_LEGACY));
 
+        // Set the image or default placeholder
+        Bitmap imageBitmap = downloadImage(item.getSavePath());
+        if (imageBitmap != null) {
+            imageView.setImageBitmap(imageBitmap);
+        } else {
+            imageView.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.placeholder_image));
+        }
+
         return view;
     }
 
-    private void generatePdf(String reportName, boolean includeCategory, boolean includePeriod, boolean includeDescription) {
+    private void generatePdf(String reportName, boolean includeLotNumber, boolean includeName, boolean includeCategory, boolean includePeriod) {
         // Create the PDF file
         File pdfFile = new File(requireContext().getExternalFilesDir(null), reportName + ".pdf");
 
@@ -273,7 +290,7 @@ public class AdminReportFragment extends Fragment {
 
             for (int i = 0; i < items.size(); i++) {
                 // Create a page for each item
-                View view = createDynamicLayoutForItem(reportName, items.get(i), includeCategory, includePeriod, includeDescription);
+                View view = createDynamicLayoutForItem(reportName, items.get(i), includeLotNumber, includeName, includeCategory, includePeriod);
                 Bitmap bitmap = createBitmapFromView(view);
 
                 PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(bitmap.getWidth(), bitmap.getHeight(), i + 1).create();
@@ -305,29 +322,6 @@ public class AdminReportFragment extends Fragment {
         }
     }
 
-    private View createDynamicLayout(String reportName) {
-        // Inflate your layout
-        LayoutInflater inflater = LayoutInflater.from(requireContext());
-        View view = inflater.inflate(R.layout.fragment_generated_report, null);
-
-        // Modify the layout based on reportName or other data
-        TextView textViewTitle = view.findViewById(R.id.textViewTitle);
-        TextView textViewContent = view.findViewById(R.id.textViewContent);
-
-        // Example data based on reportName
-        String title = reportName;
-        StringBuilder content = new StringBuilder();
-
-        for (int i = 0; i < items.size(); i++) {
-            content.append(items.get(i).toString());
-        }
-
-        textViewTitle.setText(title);
-        textViewContent.setText(content.toString());
-
-        return view;
-    }
-
     private Bitmap createBitmapFromView(View view) {
         view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
         Bitmap bitmap = Bitmap.createBitmap(view.getMeasuredWidth(), view.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
@@ -337,18 +331,15 @@ public class AdminReportFragment extends Fragment {
         return bitmap;
     }
 
-    private void saveBitmapToPDF(Bitmap bitmap, File pdfFile) throws IOException {
-        PdfDocument document = new PdfDocument();
-        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(bitmap.getWidth(), bitmap.getHeight(), 1).create();
-        PdfDocument.Page page = document.startPage(pageInfo);
-        Canvas canvas = page.getCanvas();
-        canvas.drawBitmap(bitmap, 0, 0, null);
-        document.finishPage(page);
-
-        try (FileOutputStream fos = new FileOutputStream(pdfFile)) {
-            document.writeTo(fos);
+    private Bitmap downloadImage(String imageUrl) {
+        try {
+            InputStream input = new URL(imageUrl).openStream();
+            return BitmapFactory.decodeStream(input);
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Return a default placeholder image if there's an error
+            return BitmapFactory.decodeResource(getResources(), R.drawable.placeholder_image);
         }
-        document.close();
     }
 
     private void downloadPDF(Context context, File pdfFile) {
