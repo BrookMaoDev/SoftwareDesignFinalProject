@@ -129,9 +129,25 @@ public class ItemCatalogue {
      * Run all onUpdate functions.
      */
     public void update() {
+        ArrayList<Runnable> failed = new ArrayList<>();
+
         for (Runnable fn : this.routines) {
-            fn.run();
+            try {
+                fn.run();
+            } catch (Exception e) {
+                failed.add(fn);
+                System.err.println("ItemCatalogue interacted with unloaded fragment");
+            }
         }
+
+        this.routines.removeIf(failed::contains);
+    }
+
+    /**
+     * Clears all "onUpdate" functions.
+     */
+    public void clearFunctionality() {
+        this.routines.clear();
     }
 
     /**

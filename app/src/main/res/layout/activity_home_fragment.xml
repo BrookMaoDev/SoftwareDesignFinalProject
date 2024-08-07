@@ -4,47 +4,76 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginHorizontal="50dp"
+    android:layout_marginVertical="100dp"
     tools:context=".HomeFragment">
 
-    <Button
-        android:id="@+id/buttonSearch"
+    <TextView
+        android:id="@+id/textHomeWelcome"
+        style="@style/NormalText"
         android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:paddingBottom="0dp"
+        android:text="@string/welcome"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/titleTextHome"
+        style="@style/LargeText2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingBottom="16dp"
+        android:text="@string/museum"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textHomeWelcome" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonSearch"
+        style="@style/ButtonRY"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/search"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/buttonDisplay"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleTextHome" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonDisplay"
-        android:layout_width="0dp"
+        style="@style/ButtonP"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="@string/displayB"
-        app:layout_constraintTop_toBottomOf="@+id/buttonSearch"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/buttonReport"/>
+        app:layout_constraintTop_toBottomOf="@+id/buttonSearch" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonReport"
-        android:layout_width="0dp"
+        style="@style/ButtonB"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="@string/genReport"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonDisplay" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
+        style="@style/ButtonG"
         android:id="@+id/buttonManageItems"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="@string/manage_items"
-        app:layout_constraintTop_toBottomOf="@+id/buttonReport"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonReport" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
