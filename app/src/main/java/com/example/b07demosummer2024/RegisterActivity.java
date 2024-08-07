@@ -66,7 +66,7 @@ public class RegisterActivity extends AppCompatActivity {
     private Button regButton;
     private CheckBox adminBox;
     private ProgressBar progress;
-    private TextView loginTextView;
+    private TextView loginTextView, adminPwInfo;
     private FirebaseAuth auth;
     private FirebaseDatabase db;
     private DatabaseReference dbref;
@@ -117,6 +117,7 @@ public class RegisterActivity extends AppCompatActivity {
         progress = findViewById(R.id.progress);
         regButton = findViewById(R.id.reg_btn);
         loginTextView = findViewById(R.id.loginClick);
+        adminPwInfo = findViewById(R.id.passwordInfo);
         adminBox = findViewById(R.id.adminbox);
         adminPwEditText = findViewById(R.id.adminPw);
 
@@ -137,6 +138,7 @@ public class RegisterActivity extends AppCompatActivity {
                     wantsAdmin = true;
                     Log.d("box checked", String.valueOf(wantsAdmin));
                     adminPwEditText.setVisibility(View.VISIBLE);
+                    adminPwInfo.setVisibility(View.VISIBLE);
                 }
                 else{
                     adminPwEditText.setEnabled(false);
@@ -145,6 +147,7 @@ public class RegisterActivity extends AppCompatActivity {
                         adminPwEditText.getText().clear();
                     }
                     adminPwEditText.setVisibility(View.GONE);
+                    adminPwInfo.setVisibility(View.GONE);
                 }
             }
         });
