@@ -1,10 +1,14 @@
 package com.example.b07demosummer2024;
 
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +22,7 @@ public class ItemInfoFragment extends Fragment {
     private TextView textViewName;
     private TextView textViewLot;
     private TextView textViewCategory;
+    private TextView textViewPeriod;
     private TextView textViewDescription;
     private ImageView imageView;
 
@@ -37,18 +42,6 @@ public class ItemInfoFragment extends Fragment {
         return self;
     }
 
-    // We probably don't want to cache info if it might be old
-    /*
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-    */
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -58,12 +51,28 @@ public class ItemInfoFragment extends Fragment {
         this.textViewName = view.findViewById(R.id.textViewItemName);
         this.textViewLot = view.findViewById(R.id.textViewItemLot);
         this.textViewCategory = view.findViewById(R.id.textViewItemCategory);
+        this.textViewPeriod = view.findViewById(R.id.textViewItemPeriod);
         this.textViewDescription = view.findViewById(R.id.textViewItemDescription);
 
         this.imageView.setImageBitmap(this.item.getImage());
+
         this.textViewName.setText(this.item.getName());
-        this.textViewLot.setText(this.item.getLotNumber());
-        this.textViewCategory.setText(this.item.getCategory());
+
+        String lotText = "Lot " + this.item.getLotNumber();
+        this.textViewLot.setText(lotText);
+
+        String prefix = "Category: ";
+        SpannableString categoryText = new SpannableString(prefix + this.item.getCategory());
+        categoryText.setSpan(new StyleSpan(Typeface.BOLD), 0, prefix.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        this.textViewCategory.setText(categoryText);
+
+        prefix = "Period: ";
+        SpannableString periodText = new SpannableString(prefix + this.item.getPeriod());
+        periodText.setSpan(new StyleSpan(Typeface.BOLD), 0, prefix.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        this.textViewPeriod.setText(periodText);
+
         this.textViewDescription.setText(this.item.getDescription());
 
         view.findViewById(R.id.buttonItemBack).setOnClickListener(

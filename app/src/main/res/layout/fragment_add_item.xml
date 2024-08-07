@@ -4,20 +4,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginHorizontal="50dp"
     tools:context=".AddItemFragment">
 
-    <EditText
-        android:id="@+id/editTextLotNumber"
+    <TextView
+        android:id="@+id/titleTextAddItem"
+        style="@style/LargeText2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:hint="Lot Number"
+        android:layout_marginTop="40dp"
+        android:text="@string/add_item"
+        android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
+        android:id="@+id/editTextLotNumber"
+        style="@style/NormalText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="Lot Number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleTextAddItem" />
+
+    <EditText
         android:id="@+id/editTextName"
+        style="@style/NormalText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -74,19 +89,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinnerPeriod" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonUpload"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/ButtonRY"
         android:layout_marginTop="20dp"
+        android:paddingHorizontal="20dp"
         android:text="@string/upload_item"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextDescription" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonAdd"
-        android:layout_width="wrap_content"
+        style="@style/ButtonP"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="@string/add_item"
@@ -94,13 +109,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonUpload" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonCancel"
-        android:layout_width="wrap_content"
+        style="@style/ButtonB"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/cancel"
+        android:layout_marginBottom="6dp"
+        android:text="@string/back"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonAdd" />
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

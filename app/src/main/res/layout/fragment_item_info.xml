@@ -5,80 +5,116 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ItemInfoFragment" >
+    android:paddingHorizontal="36dp"
+    tools:context=".ItemInfoFragment">
 
-    <ImageView
-        android:id="@+id/imageViewItem"
-        android:layout_width="323dp"
-        android:layout_height="323dp"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="44dp"
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="412dp"
+        android:layout_height="595dp"
+        android:fadingEdgeLength="80dp"
+        android:requiresFadingEdge="vertical"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@tools:sample/backgrounds/scenic" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/textViewItemName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="16dp"
-        android:ellipsize="end"
-        android:maxWidth="323dp"
-        android:singleLine="false"
-        android:text="name"
-        android:textAlignment="viewStart"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewItem" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textViewItemLot"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:ellipsize="end"
-        android:maxWidth="323dp"
-        android:singleLine="false"
-        android:text="lot#"
-        android:textAlignment="viewStart"
-        app:layout_constraintStart_toStartOf="@+id/textViewItemName"
-        app:layout_constraintTop_toBottomOf="@+id/textViewItemName" />
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewItem"
+                android:layout_width="323dp"
+                android:layout_height="323dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="30dp"
+                app:cardCornerRadius="30dp"
+                app:cardElevation="0dp">
 
-    <TextView
-        android:id="@+id/textViewItemCategory"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:ellipsize="end"
-        android:maxWidth="323dp"
-        android:singleLine="false"
-        android:text="category"
-        android:textAlignment="viewStart"
-        app:layout_constraintStart_toStartOf="@+id/textViewItemLot"
-        app:layout_constraintTop_toBottomOf="@+id/textViewItemLot" />
+                <ImageView
+                    android:id="@+id/imageViewItem"
+                    android:layout_width="323dp"
+                    android:layout_height="323dp"
+                    android:scaleType="centerCrop"
+                    tools:src="@tools:sample/backgrounds/scenic" />
+            </androidx.cardview.widget.CardView>
 
-    <TextView
-        android:id="@+id/textViewItemDescription"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:ellipsize="end"
-        android:maxWidth="323dp"
-        android:singleLine="false"
-        android:text="description"
-        android:textAlignment="viewStart"
-        app:layout_constraintStart_toStartOf="@+id/textViewItemCategory"
-        app:layout_constraintTop_toBottomOf="@+id/textViewItemCategory" />
+            <TextView
+                android:id="@+id/textViewItemName"
+                style="@style/LargeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="20dp"
+                android:ellipsize="end"
+                android:maxWidth="323dp"
+                android:singleLine="false"
+                android:text="@string/item_name"
+                android:textAlignment="viewStart" />
 
-    <Button
+            <TextView
+                android:id="@+id/textViewItemCategory"
+                style="@style/NormalText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                android:maxWidth="323dp"
+                android:singleLine="false"
+                android:text="@string/category"
+                android:textAlignment="viewStart" />
+
+            <TextView
+                android:id="@+id/textViewItemPeriod"
+                style="@style/NormalText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                android:maxWidth="323dp"
+                android:singleLine="false"
+                android:text="@string/period"
+                android:textAlignment="viewStart" />
+
+            <TextView
+                android:id="@+id/textViewItemLot"
+                style="@style/NormalText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                android:maxWidth="323dp"
+                android:singleLine="false"
+                android:text="@string/lot"
+                android:textAlignment="viewStart" />
+
+            <TextView
+                android:id="@+id/textViewItemDescription"
+                style="@style/NormalText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="16dp"
+                android:ellipsize="end"
+                android:maxWidth="323dp"
+                android:paddingBottom="120dp"
+                android:singleLine="false"
+                android:text="@string/description"
+                android:textAlignment="viewStart" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonItemBack"
-        android:layout_width="84dp"
-        android:layout_height="48dp"
-        android:layout_marginBottom="16dp"
-        android:text="Back"
+        style="@style/ButtonRY"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="6dp"
+        android:text="@string/back"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/textViewItemDescription" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

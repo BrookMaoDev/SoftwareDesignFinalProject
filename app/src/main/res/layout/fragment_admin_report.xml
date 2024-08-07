@@ -4,16 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginHorizontal="50dp"
     tools:context=".AdminReportFragment">
 
         <TextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
+            android:id="@+id/titleTextGenerateReport"
+            style="@style/LargeText2"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Generate a report by entering the following information:"
+            android:layout_marginTop="40dp"
+            android:paddingBottom="28dp"
+            android:text="@string/generate_report"
+            android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.492"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -21,201 +24,166 @@
             android:id="@+id/editTextLotNumber"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="56dp"
-            android:layout_marginBottom="630dp"
             android:hint="Lot Number"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/buttonLotNumber"
-            app:layout_constraintTop_toTopOf="parent"
+            android:paddingBottom="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titleTextGenerateReport"
             app:layout_constraintWidth_percent="0.6" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
+            style="@style/ButtonRY"
+            android:layout_height="38dp"
             android:id="@+id/buttonLotNumber"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="52dp"
-            android:layout_marginTop="56dp"
-            android:layout_marginBottom="627dp"
+            android:layout_marginTop="3dp"
             android:text="Submit"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/editTextLotNumber"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/editTextLotNumber" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
+            style="@style/ButtonRY"
+            android:layout_height="38dp"
             android:id="@+id/buttonPeriod"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="52dp"
-            android:layout_marginTop="251dp"
-            android:layout_marginBottom="432dp"
+            android:layout_marginTop="3dp"
             android:text="Submit"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/editTextPeriod"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/editTextPeriod" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
+            style="@style/ButtonRY"
+            android:layout_height="38dp"
             android:id="@+id/buttonCategory"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="52dp"
-            android:layout_marginTop="186dp"
-            android:layout_marginBottom="497dp"
+            android:layout_marginTop="3dp"
             android:text="Submit"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/editTextCategory"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/editTextCategory" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
+            style="@style/ButtonRY"
+            android:layout_height="38dp"
             android:id="@+id/buttonName"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="52dp"
-            android:layout_marginTop="121dp"
-            android:layout_marginBottom="562dp"
+            android:layout_marginTop="3dp"
             android:text="Submit"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/editTextName"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/editTextName" />
 
         <EditText
             android:id="@+id/editTextName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="121dp"
-            android:layout_marginBottom="565dp"
+            android:paddingBottom="12dp"
+            android:layout_marginTop="12dp"
             android:hint="Name"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/buttonName"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextLotNumber"
             app:layout_constraintWidth_percent="0.6" />
 
         <EditText
             android:id="@+id/editTextCategory"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="186dp"
-            android:layout_marginBottom="500dp"
+            android:paddingBottom="12dp"
+            android:layout_marginTop="12dp"
             android:hint="Category"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/buttonCategory"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextName"
             app:layout_constraintWidth_percent="0.6" />
 
         <EditText
             android:id="@+id/editTextPeriod"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="251dp"
-            android:layout_marginBottom="435dp"
             android:hint="Period"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/buttonPeriod"
-            app:layout_constraintTop_toTopOf="parent"
+            android:paddingBottom="12dp"
+            android:layout_marginTop="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextCategory"
             app:layout_constraintWidth_percent="0.6" />
 
         <TextView
             android:id="@+id/textView05"
-            android:layout_width="wrap_content"
+            android:layout_width="206dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="310dp"
-            android:text="Generate the report by Category, Description and picture only:"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp"
+            android:text="Category, description and picture only:"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/editTextPeriod" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonGenerate1"
+            style="@style/ButtonP"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="337dp"
+            android:layout_height="38dp"
             android:text="Submit"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textView05" />
+            app:layout_constraintTop_toTopOf="@+id/textView05" />
 
         <TextView
             android:id="@+id/textView06"
-            android:layout_width="wrap_content"
+            android:layout_width="206dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="298dp"
-            android:text="Generate the report Period, Description and picture only:"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp"
+            android:text="Period, description and picture only:"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/buttonGenerate1" />
+            app:layout_constraintTop_toBottomOf="@+id/textView05" />
 
-        <Button
-            android:id="@+id/buttonGenerate2"
+        <androidx.appcompat.widget.AppCompatButton
+            style="@style/ButtonP"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="243dp"
+            android:layout_height="38dp"
+            android:id="@+id/buttonGenerate2"
             android:text="Submit"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textView06" />
+            app:layout_constraintTop_toTopOf="@+id/textView06" />
 
         <TextView
             android:id="@+id/textView07"
-            android:layout_width="wrap_content"
+            android:layout_width="206dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="202dp"
+            android:layout_marginTop="16dp"
             android:text="Generate the report for all items:"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/buttonGenerate2" />
+            app:layout_constraintTop_toBottomOf="@+id/textView06" />
 
-        <Button
-            android:id="@+id/buttonGenerate3"
+        <androidx.appcompat.widget.AppCompatButton
+            style="@style/ButtonP"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="145dp"
+            android:layout_height="38dp"
+            android:id="@+id/buttonGenerate3"
             android:text="Submit"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textView07" />
+            app:layout_constraintTop_toTopOf="@+id/textView07" />
 
         <TextView
             android:id="@+id/textView08"
-            android:layout_width="wrap_content"
+            android:layout_width="206dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="106dp"
-            android:text="Generate the report for all items with Description and picture only:"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp"
+            android:text="All items, with description and picture only:"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/buttonGenerate3" />
+            app:layout_constraintTop_toBottomOf="@+id/textView07" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonGenerate4"
+            style="@style/ButtonP"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="50dp"
+            android:layout_height="38dp"
             android:text="Submit"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textView08" />
+            app:layout_constraintTop_toTopOf="@+id/textView08" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
+            style="@style/ButtonB"
             android:id="@+id/buttonCancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="@string/cancel"
+            android:layout_marginBottom="6dp"
+            android:text="@string/back"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/buttonGenerate4" />
+            app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

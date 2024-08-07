@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Toronto Asian Art Museum Collection Management</string>
     <!-- TODO: Remove or change this placeholder text -->
+    <string name="museum">Toronto Asian Art Museum</string>
+    <string name="welcome">Welcome to the</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="delete_item">Delete Item</string>
     <string name="add_item">Add Item</string>
@@ -15,6 +17,10 @@
     <string name="item_name">Item Name</string>
     <string name="view">View</string>
     <string name="report">Report</string>
+    <string name="description">Description</string>
+    <string name="generate_report">Generate a Report</string>
+    <string name="search_go">Search</string>
+    <string name="search_plural">Search Items</string>
 
     <string-array name="categories_array">
         <item>Jade</item>

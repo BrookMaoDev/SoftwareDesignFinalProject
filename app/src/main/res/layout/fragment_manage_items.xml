@@ -4,35 +4,49 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginHorizontal="50dp"
+    android:layout_marginVertical="140dp"
     tools:context=".ManageItemsFragment">
 
-    <Button
-        android:id="@+id/buttonAddItem"
+    <TextView
+        android:id="@+id/titleTextManageItems"
+        style="@style/LargeText2"
         android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:paddingBottom="28dp"
+        android:text="@string/manage_items"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        style="@style/ButtonRY"
+        android:id="@+id/buttonAddItem"
         android:layout_height="wrap_content"
         android:text="@string/add_item"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/buttonDeleteItem"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleTextManageItems" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonDeleteItem"
-        android:layout_width="0dp"
+        style="@style/ButtonP"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="@string/delete_item"
-        app:layout_constraintTop_toBottomOf="@+id/buttonAddItem"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/buttonBack"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonAddItem" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonBack"
-        android:layout_width="0dp"
+        style="@style/ButtonB"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
         android:text="@string/back"
-        app:layout_constraintTop_toBottomOf="@+id/buttonDeleteItem"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
