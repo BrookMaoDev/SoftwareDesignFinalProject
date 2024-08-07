@@ -10,6 +10,7 @@
         android:layout_height="40dp">
 
     </TextView>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -51,38 +52,40 @@
                     android:text="@string/picture" />
 
             </TableRow>
-
-
         </TableLayout>
     </ScrollView>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:orientation="horizontal">
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonView"
+            style="@style/ButtonRY"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="@string/view" />
 
         <Space
-            android:layout_width="55dp"
+            android:layout_width="45dp"
             android:layout_height="wrap_content" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonReport"
+            style="@style/ButtonP"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="@string/report" />
 
         <Space
-            android:layout_width="55dp"
+            android:layout_width="45dp"
             android:layout_height="wrap_content" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonBack"
+            style="@style/ButtonB"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="@string/back" />
@@ -90,35 +93,32 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="horizontal">
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal">
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonPrevPage"
-            android:layout_width="wrap_content"
+            style="@style/ButtonG"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:text="Previous" />
+            android:text="Prev" />
 
         <EditText
             android:id="@+id/pageNumber"
-            android:layout_width="50dp"
+            android:layout_width="190dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:focusable="false"
             android:gravity="center"
             android:inputType="none" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonNextPage"
-            android:layout_width="wrap_content"
+            style="@style/ButtonG"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="Next" />
 
