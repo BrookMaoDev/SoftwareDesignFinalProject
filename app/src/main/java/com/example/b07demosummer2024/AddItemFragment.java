@@ -124,19 +124,32 @@ public class AddItemFragment extends Fragment {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         selectedImageBitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
         byte[] data = baos.toByteArray();
-        imageRef.putBytes(data);
 
-        itemsRef = db.getReference("items/");
-        String id = itemsRef.push().getKey();
-        Item item = new Item(lotNumber, name, category, period, description, storagePath);
+        imageRef.putBytes(data).addOnSuccessListener(taskSnapshot -> {
+            // Get the download URL after the image is successfully uploaded
+            imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                String downloadUrl = uri.toString();
 
-        itemsRef.child(id).setValue(item).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                Toast.makeText(getContext(), "Item added", Toast.LENGTH_SHORT).show();
-                getParentFragmentManager().popBackStack();
-            } else {
-                Toast.makeText(getContext(), "Failed to add item", Toast.LENGTH_SHORT).show();
-            }
+                // Save the item to the database with the download URL
+                itemsRef = db.getReference("items/");
+                String id = itemsRef.push().getKey();
+                Item item = new Item(lotNumber, name, category, period, description, downloadUrl);
+
+                itemsRef.child(id).setValue(item).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(getContext(), "Item added", Toast.LENGTH_SHORT).show();
+                        getParentFragmentManager().popBackStack();
+                    } else {
+                        Toast.makeText(getContext(), "Failed to add item", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }).addOnFailureListener(exception -> {
+                // Handle any errors getting the download URL
+                Toast.makeText(getContext(), "Failed to get download URL", Toast.LENGTH_SHORT).show();
+            });
+        }).addOnFailureListener(exception -> {
+            // Handle any errors uploading the image
+            Toast.makeText(getContext(), "Failed to upload image", Toast.LENGTH_SHORT).show();
         });
     }
 

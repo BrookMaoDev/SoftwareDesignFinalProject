@@ -39,16 +39,37 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 
 import android.graphics.pdf.PdfDocument;
+import android.text.Html;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import android.os.Handler;
+import android.os.Looper;
 
 public class AdminReportFragment extends Fragment {
     private EditText editTextLotNumber, editTextName, editTextCategory, editTextPeriod;
-    private Button buttonLotNum, buttonName, buttonCategory, buttonPeriod;
-    private Button buttonGenerate1, buttonGenerate2, buttonGenerate3, buttonGenerate4;
+    private Button buttonLotNumber, buttonName, buttonCategory, buttonPeriod;
+    private Button buttonGenerate1, buttonGenerate2, buttonGenerate3, buttonGenerate4, buttonCancel;
     private FirebaseDatabase db;
     private DatabaseReference itemsRef;
     private StorageReference storageRef;
     private ItemCatalogue itemCatalogue;
     private ArrayList<Item> items;
+
+    private ExecutorService executorService;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        executorService = Executors.newSingleThreadExecutor();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (executorService != null && !executorService.isShutdown()) {
+            executorService.shutdown();
+        }
+    }
 
     ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == Activity.RESULT_OK) {
@@ -75,7 +96,7 @@ public class AdminReportFragment extends Fragment {
         editTextPeriod = view.findViewById(R.id.editTextPeriod);
 
         // Initialize buttons
-        buttonLotNum = view.findViewById(R.id.buttonLotNum);
+        buttonLotNumber = view.findViewById(R.id.buttonLotNumber);
         buttonName = view.findViewById(R.id.buttonName);
         buttonCategory = view.findViewById(R.id.buttonCategory);
         buttonPeriod = view.findViewById(R.id.buttonPeriod);
@@ -83,9 +104,10 @@ public class AdminReportFragment extends Fragment {
         buttonGenerate2 = view.findViewById(R.id.buttonGenerate2);
         buttonGenerate3 = view.findViewById(R.id.buttonGenerate3);
         buttonGenerate4 = view.findViewById(R.id.buttonGenerate4);
+        buttonCancel = view.findViewById(R.id.buttonCancel);
 
         // Set click listeners using lambda expressions (Java 8+)
-        buttonLotNum.setOnClickListener(v -> handleButtonClick("LotNum"));
+        buttonLotNumber.setOnClickListener(v -> handleButtonClick("LotNumber"));
         buttonName.setOnClickListener(v -> handleButtonClick("Name"));
         buttonCategory.setOnClickListener(v -> handleButtonClick("Category"));
         buttonPeriod.setOnClickListener(v -> handleButtonClick("Period"));
@@ -93,74 +115,193 @@ public class AdminReportFragment extends Fragment {
         buttonGenerate2.setOnClickListener(v -> handleButtonClick("Generate2"));
         buttonGenerate3.setOnClickListener(v -> handleButtonClick("Generate3"));
         buttonGenerate4.setOnClickListener(v -> handleButtonClick("Generate4"));
+        buttonCancel.setOnClickListener(v -> getParentFragmentManager().popBackStack());
 
         itemCatalogue = DatabaseManager.getInstance().createItemCatalogue();
         itemCatalogue.onUpdate(() -> {
-            Toast.makeText(requireContext(), "RAWAD", Toast.LENGTH_SHORT).show();
             items = itemCatalogue.getItems();
-            // Update UI with items
         });
         itemCatalogue.init();
 
         return view;
     }
 
-    private void addInformation() {
+    private void handleButtonClick(String buttonName) {
         String lotNumber = editTextLotNumber.getText().toString().trim();
         String name = editTextName.getText().toString().trim();
         String category = editTextCategory.getText().toString().trim();
         String period = editTextPeriod.getText().toString().trim();
-    }
 
-    private void handleButtonClick(String buttonName) {
         switch (buttonName) {
-            case "LotNum":
-                // Action for buttonLotNum
+            case "LotNumber":
+                if (lotNumber.isEmpty()) {
+                    Toast.makeText(requireContext(), "Lot Number cannot be empty", Toast.LENGTH_SHORT).show();
+                } else {
+                    itemCatalogue.changeFilter(new ItemCatalogue.Filter().lotNumber(lotNumber));
+                    if (items.isEmpty()) {
+                        Toast.makeText(requireContext(), "Invalid Lot Number", Toast.LENGTH_SHORT).show();
+                    } else {
+                        generatePdfInBackground("Report of lot number", true, true, true);
+                    }
+                }
+                clearEditTextFields();
                 break;
             case "Name":
-                // Action for buttonName
+                if (name.isEmpty()) {
+                    Toast.makeText(requireContext(), "Name cannot be empty", Toast.LENGTH_SHORT).show();
+                } else {
+                    itemCatalogue.changeFilter(new ItemCatalogue.Filter().name(name));
+                    if (items.isEmpty()) {
+                        Toast.makeText(requireContext(), "Invalid Name", Toast.LENGTH_SHORT).show();
+                    } else {
+                        generatePdfInBackground("Report of name", true, true, true);
+                    }
+                }
+                clearEditTextFields();
                 break;
             case "Category":
-                // Action for buttonCategory
+                if (category.isEmpty()) {
+                    Toast.makeText(requireContext(), "Category cannot be empty", Toast.LENGTH_SHORT).show();
+                } else {
+                    itemCatalogue.changeFilter(new ItemCatalogue.Filter().category(category));
+                    if (items.isEmpty()) {
+                        Toast.makeText(requireContext(), "Invalid Category", Toast.LENGTH_SHORT).show();
+                    } else {
+                        generatePdfInBackground("Report of category", true, true, true);
+                    }
+                }
+                clearEditTextFields();
                 break;
             case "Period":
-                // Action for buttonPeriod
+                if (period.isEmpty()) {
+                    Toast.makeText(requireContext(), "Period cannot be empty", Toast.LENGTH_SHORT).show();
+                } else {
+                    itemCatalogue.changeFilter(new ItemCatalogue.Filter().period(period));
+                    if (items.isEmpty()) {
+                        Toast.makeText(requireContext(), "Invalid Period", Toast.LENGTH_SHORT).show();
+                    } else {
+                        generatePdfInBackground("Report of period", true, true, true);
+                    }
+                }
+                clearEditTextFields();
                 break;
             case "Generate1":
-                generatePdf("Report1");
+                if (category.isEmpty()) {
+                    Toast.makeText(requireContext(), "Category cannot be empty", Toast.LENGTH_SHORT).show();
+                } else {
+                    itemCatalogue.changeFilter(new ItemCatalogue.Filter().category(category));
+                    if (items.isEmpty()) {
+                        Toast.makeText(requireContext(), "Invalid Category", Toast.LENGTH_SHORT).show();
+                    } else {
+                        generatePdfInBackground("Report of category and description only", true, false, true);
+                    }
+                }
+                clearEditTextFields();
                 break;
             case "Generate2":
-                generatePdf("Report2");
+                if (period.isEmpty()) {
+                    Toast.makeText(requireContext(), "Period cannot be empty", Toast.LENGTH_SHORT).show();
+                } else {
+                    itemCatalogue.changeFilter(new ItemCatalogue.Filter().period(period));
+                    if (items.isEmpty()) {
+                        Toast.makeText(requireContext(), "Invalid Period", Toast.LENGTH_SHORT).show();
+                    } else {
+                        generatePdfInBackground("Report of period and description only", false, true, true);
+                    }
+                }
+                clearEditTextFields();
                 break;
             case "Generate3":
-                generatePdf("Report3");
+                generatePdfInBackground("Report of all items", true, true, true);
+                clearEditTextFields();
                 break;
             case "Generate4":
-                generatePdf("Report4");
+                generatePdfInBackground("Report of description only", false, false, true);
+                clearEditTextFields();
                 break;
             default:
                 throw new IllegalArgumentException("Unexpected button name: " + buttonName);
         }
+
     }
 
-    private void generatePdf(String reportName) {
-        // Create dynamic layout
-        View view = createDynamicLayout(reportName);
+    private void clearEditTextFields() {
+        editTextLotNumber.setText("");
+        editTextName.setText("");
+        editTextCategory.setText("");
+        editTextPeriod.setText("");
+    }
 
-        // Render the layout to a bitmap
-        Bitmap bitmap = createBitmapFromView(view);
+    private void generatePdfInBackground(String reportName, boolean includeCategory, boolean includePeriod, boolean includeDescription) {
+        executorService.submit(() -> {
+            generatePdf(reportName, includeCategory, includePeriod, includeDescription);
+        });
+    }
 
-        // Convert the bitmap to a PDF
+    private View createDynamicLayoutForItem(String reportName, Item item, boolean includeCategory, boolean includePeriod, boolean includeDescription) {
+        LayoutInflater inflater = LayoutInflater.from(requireContext());
+        View view = inflater.inflate(R.layout.fragment_generated_report, null);
+
+        TextView textViewTitle = view.findViewById(R.id.textViewTitle);
+        TextView textViewContent = view.findViewById(R.id.textViewContent);
+
+        // Set data for each item with conditional formatting
+        StringBuilder content = new StringBuilder();
+
+        if (includeCategory) {
+            content.append("<p><strong>Category:</strong> ").append(item.getCategory()).append("</p>");
+        }
+        if (includePeriod) {
+            content.append("<p><strong>Period:</strong> ").append(item.getPeriod()).append("</p>");
+        }
+        if (includeDescription) {
+            content.append("<p><strong>Description:</strong> ").append(item.getDescription()).append("</p>");
+        }
+
+        textViewTitle.setText(reportName);
+        textViewContent.setText(Html.fromHtml(content.toString(), Html.FROM_HTML_MODE_LEGACY));
+
+        return view;
+    }
+
+    private void generatePdf(String reportName, boolean includeCategory, boolean includePeriod, boolean includeDescription) {
+        // Create the PDF file
+        File pdfFile = new File(requireContext().getExternalFilesDir(null), reportName + ".pdf");
+
         try {
-            File pdfFile = new File(requireContext().getExternalFilesDir(null), reportName + ".pdf");
-            saveBitmapToPDF(bitmap, pdfFile);
+            PdfDocument document = new PdfDocument();
+
+            for (int i = 0; i < items.size(); i++) {
+                // Create a page for each item
+                View view = createDynamicLayoutForItem(reportName, items.get(i), includeCategory, includePeriod, includeDescription);
+                Bitmap bitmap = createBitmapFromView(view);
+
+                PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(bitmap.getWidth(), bitmap.getHeight(), i + 1).create();
+                PdfDocument.Page page = document.startPage(pageInfo);
+                Canvas canvas = page.getCanvas();
+                canvas.drawBitmap(bitmap, 0, 0, null);
+                document.finishPage(page);
+
+                // Free bitmap memory after use
+                bitmap.recycle();
+            }
+
+            try (FileOutputStream fos = new FileOutputStream(pdfFile)) {
+                document.writeTo(fos);
+            }
+            document.close();
 
             // Download the generated PDF
-            downloadPDF(requireContext(), pdfFile);
-            Toast.makeText(requireContext(), "PDF Generated: " + pdfFile.getPath(), Toast.LENGTH_SHORT).show();
+            new Handler(Looper.getMainLooper()).post(() -> {
+                downloadPDF(requireContext(), pdfFile);
+                Toast.makeText(requireContext(), "PDF Generated: " + pdfFile.getPath(), Toast.LENGTH_SHORT).show();
+            });
+
         } catch (IOException e) {
             e.printStackTrace();
-            Toast.makeText(requireContext(), "Error generating PDF", Toast.LENGTH_SHORT).show();
+            new Handler(Looper.getMainLooper()).post(() ->
+                    Toast.makeText(requireContext(), "Error generating PDF", Toast.LENGTH_SHORT).show()
+            );
         }
     }
 
@@ -174,8 +315,8 @@ public class AdminReportFragment extends Fragment {
         TextView textViewContent = view.findViewById(R.id.textViewContent);
 
         // Example data based on reportName
-        String title = "Report: " + reportName;
-        StringBuilder content = new StringBuilder(String.format("%d", items.size()));
+        String title = reportName;
+        StringBuilder content = new StringBuilder();
 
         for (int i = 0; i < items.size(); i++) {
             content.append(items.get(i).toString());
