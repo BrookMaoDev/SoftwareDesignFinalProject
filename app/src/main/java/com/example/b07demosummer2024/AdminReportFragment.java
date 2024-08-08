@@ -218,10 +218,12 @@ public class AdminReportFragment extends Fragment {
                 break;
             case "Generate3":
                 generatePdfInBackground("Report of all items", true, true, true, true);
+                itemCatalogue.changeFilter(null);
                 clearEditTextFields();
                 break;
             case "Generate4":
                 generatePdfInBackground("Report of description and image only", false, false, false, false);
+                itemCatalogue.changeFilter(null);
                 clearEditTextFields();
                 break;
             default:
