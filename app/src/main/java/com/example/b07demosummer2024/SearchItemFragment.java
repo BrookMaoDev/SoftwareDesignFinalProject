@@ -75,8 +75,17 @@ public class SearchItemFragment extends Fragment {
     }
 
     private void searchItem() {
-        String lotNumber = editTextLotNumber.getText().toString().trim();
-        String name = editTextName.getText().toString().toLowerCase().trim();
+        String lotNumberTemp = editTextLotNumber.getText().toString().trim();
+        if (lotNumberTemp.isEmpty()) {
+            lotNumberTemp = null;
+        }
+        final String lotNumber = lotNumberTemp;
+
+        String nameTemp = editTextName.getText().toString().toLowerCase().trim();
+        if (nameTemp.isEmpty()) {
+            nameTemp = null;
+        }
+        final String name = nameTemp;
 
         category = null;
         if(spinnerCategory != null && spinnerCategory.getSelectedItem() != null ) {
@@ -92,10 +101,10 @@ public class SearchItemFragment extends Fragment {
         this.items.init();
         this.items.onUpdate(() -> {
             this.items.changeFilter(new ItemCatalogue.Filter()
-                    .category(category)
-                    .lotNumber(lotNumber)
+                    .categoryEquals(category)
+                    .lotNumberEquals(lotNumber)
                     .name(name)
-                    .period(period));
+                    .periodEquals(period));
             this.items.applyFilter();
             if (this.items.getNumOfItems() == 0) {
                 Toast.makeText(getContext(), "Item not found", Toast.LENGTH_SHORT).show();
