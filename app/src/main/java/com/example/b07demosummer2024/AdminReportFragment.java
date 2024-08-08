@@ -7,16 +7,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +28,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.database.DatabaseReference;
@@ -35,20 +40,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URL;
 import java.util.ArrayList;
-
-import android.graphics.pdf.PdfDocument;
-import android.text.Html;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import android.os.Handler;
 import android.os.Looper;
-import java.io.InputStream;
-import java.net.URL;
 import android.graphics.BitmapFactory;
-import android.widget.ImageView;
-import androidx.core.content.ContextCompat;
 
 public class AdminReportFragment extends Fragment {
     private EditText editTextLotNumber, editTextName, editTextCategory, editTextPeriod;
@@ -289,6 +289,7 @@ public class AdminReportFragment extends Fragment {
 
         try {
             PdfDocument document = new PdfDocument();
+            Paint paint = new Paint();  // Define the Paint object here
 
             for (int i = 0; i < items.size(); i++) {
                 // Create a page for each item
@@ -298,7 +299,7 @@ public class AdminReportFragment extends Fragment {
                 PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(bitmap.getWidth(), bitmap.getHeight(), i + 1).create();
                 PdfDocument.Page page = document.startPage(pageInfo);
                 Canvas canvas = page.getCanvas();
-                canvas.drawBitmap(bitmap, 0, 0, null);
+                canvas.drawBitmap(bitmap, 0, 0, paint);  // Use the Paint object here
                 document.finishPage(page);
 
                 // Free bitmap memory after use
