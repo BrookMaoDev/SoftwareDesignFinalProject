@@ -394,6 +394,10 @@ class StringChecker {
      * @return true iff this checker accepts `value`
      */
     public boolean matches(String value) {
+        if (this.value == null) {
+            return true;
+        }
+
         if (this.exact) {
             return this.value.equalsIgnoreCase(value);
         } else {
@@ -423,6 +427,14 @@ class StringChecker {
         }
 
         StringChecker that = (StringChecker) o;
+        if (this.value == null && that.value == null) {
+            return this.exact == that.exact;
+        }
+
+        if (this.value == null || that.value == null) {
+            return false;
+        }
+
         return this.value.equals(that.value) && this.exact == that.exact;
     }
 
